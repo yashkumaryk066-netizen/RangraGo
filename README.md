@@ -1,47 +1,42 @@
-# RangraGo - Ride + Call MVP
+# RangraGo 🚀
+### India's Next-Gen Ride Experience
 
-This project is a working MVP (Minimum Viable Product) for a ride-sharing application with integrated in-app calling via Agora. 
+RangraGo is a premium, cost-optimized ride-hailing application designed for full reliability and scale. Built with a Cyber-Dark aesthetic, it offers a seamless experience for both Riders and Drivers.
+
+## ✨ Key Features
+- **Premium Branding**: Custom unified identity with high-end dark theme.
+- **Cost Optimized**: Fully integrated with **OpenStreetMap** (Free) for mapping and navigation across India.
+- **Strict OTP Verification**: Secure ride starts via server-validated OTP.
+- **Dynamic Pricing**: Real-time fare estimation based on vehicle type (Bike, Auto, Car, Prime).
+- **In-App Communication**: Agora-powered voice calling between rider and driver.
+- **Professional Driver Onboarding**: Complete vehicle registration and license verification flow.
+- **Real-time Sync**: Socket.io integration for instant ride updates and driver availability.
+
+## 🛠️ Technology Stack
+- **Frontend**: Flutter (Android/iOS/Web/Desktop)
+- **Backend**: Node.js & Express
+- **Database**: MongoDB
+- **Real-time**: Socket.io
+- **Voice/Communication**: Agora RTC
+- **Maps**: OpenStreetMap (Nominatim Geocoding)
 
 ## 🚀 Getting Started
+1. **Automation**: Run `./deploy.sh` to install dependencies and build the application.
+2. **Backend**: 
+   - `cd backend`
+   - `npm install`
+   - Configure `.env` with your Mongo URI and Agora credentials.
+   - `npm start`
+3. **Frontend**:
+   - `cd frontend`
+   - `flutter pub get`
+   - `flutter run`
 
-### 1. Backend Setup (Node.js)
-1. Navigate to the `backend` directory:
-   ```bash
-   cd backend
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Configure your environment variables in `.env`:
-   - `MONGO_URI`: Your MongoDB connection string.
-   - `AGORA_APP_ID`: Your Agora project ID.
-   - `AGORA_APP_CERTIFICATE`: Your Agora project certificate.
-4. Start the server:
-   ```bash
-   npm start
-   ```
+## 📊 Business Logic (Pricing)
+- **Bike**: ₹5/km + ₹20 base
+- **Auto**: ₹10/km + ₹30 base
+- **Car**: ₹15/km + ₹50 base
+- **Prime**: ₹25/km + ₹80 base
 
-### 2. Frontend Setup (Flutter)
-1. Navigate to the `frontend` directory:
-   ```bash
-   cd frontend
-   ```
-2. Fetch dependencies:
-   ```bash
-   flutter pub get
-   ```
-3. (Important) Update the `serverUrl` in `lib/services/socket_service.dart` with your machine's IP address if running on a physical device.
-4. Run the app:
-   ```bash
-   flutter run
-   ```
-
-## 🏗️ System Architecture
-- **Backend**: Express.js, Socket.io, MongoDB.
-- **Frontend**: Flutter, `socket_io_client`, `agora_rtc_engine`.
-- **Calling**: Signaling via Sockets -> Audio via Agora (using `ride_$rideId` as channel).
-
-## 🔒 Security Rules
-- Only riders/drivers with an `ACCEPTED` ride can initiate a call signaling request.
-- Phone numbers are never exchanged between users.
+---
+Developed with ❤️ for the RangraGo Community.
