@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:html' as html; // Web persistence ke liye zaroori hai
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/login_screen.dart';
@@ -23,9 +22,10 @@ class RangraGoApp extends StatefulWidget {
 class _RangraGoAppState extends State<RangraGoApp> {
   Future<Map<String, dynamic>?> _loadSession() async {
     try {
-      final String? token = html.window.localStorage['token'];
-      final String? userDataStr = html.window.localStorage['user_data'];
-      final bool isDriver = html.window.localStorage['is_driver'] == 'true';
+      final prefs = await SharedPreferences.getInstance();
+      final String? token = prefs.getString('token');
+      final String? userDataStr = prefs.getString('user_data');
+      final bool isDriver = prefs.getBool('is_driver') ?? false;
 
       if (token != null && userDataStr != null && token.isNotEmpty) {
         final userData = jsonDecode(userDataStr);
@@ -42,10 +42,11 @@ class _RangraGoAppState extends State<RangraGoApp> {
     return null;
   }
 
-  void _updateSession(String token, Map<String, dynamic> user, bool isDriver) {
-    html.window.localStorage['token'] = token;
-    html.window.localStorage['user_data'] = jsonEncode(user);
-    html.window.localStorage['is_driver'] = isDriver.toString();
+  Future<void> _updateSession(String token, Map<String, dynamic> user, bool isDriver) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', token);
+    await prefs.setString('user_data', jsonEncode(user));
+    await prefs.setBool('is_driver', isDriver);
     AppConfig.userToken = token;
     setState(() {}); // Re-trigger FutureBuilder
   }
@@ -86,24 +87,24 @@ class _RangraGoAppState extends State<RangraGoApp> {
               return isDriver 
                 ? DriverRegistrationScreen(
                     userData: user,
-                    onComplete: () {
+                    onComplete: () async {
                       user['isRegistered'] = true;
-                      _updateSession(token, user, isDriver);
+                      await _updateSession(token, user, isDriver);
                     },
                   )
                 : RiderRegistrationScreen(
                     userData: user,
-                    onComplete: () {
+                    onComplete: () async {
                       user['isRegistered'] = true;
-                      _updateSession(token, user, isDriver);
+                      await _updateSession(token, user, isDriver);
                     },
                   );
             }
           }
 
           return LoginScreen(
-            onLoginSuccess: (data, isDriver) {
-              _updateSession(data['token'], data['user'], isDriver);
+            onLoginSuccess: (data, isDriver) async {
+              await _updateSession(data['token'], data['user'], isDriver);
             },
           );
         },
