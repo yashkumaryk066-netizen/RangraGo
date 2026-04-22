@@ -141,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
       } : null,
     );
 
-    _socketService.socket!.on("driver-location-update", (data) => {
+    _socketService.socket!.on("driver-location-update", (data) {
       if (mounted && !widget.isDriver) {
         final lat = data['lat'] as double;
         final lng = data['lng'] as double;
