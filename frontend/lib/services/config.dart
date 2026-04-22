@@ -13,6 +13,12 @@ class AppConfig {
   
   // PASTE YOUR GOOGLE MAPS API KEY HERE for A to Z Locations
   static const String googleMapsKey = "YOUR_GOOGLE_MAPS_API_KEY_HERE";
+
+  // GOOGLE CLIENT ID (for Google Sign In)
+  static const String googleClientId = "336631033589-nq28gonut9lsv33ocs68tq4h1dejbbb8.apps.googleusercontent.com";
+
+  // AGORA APP ID (for Voice Calling)
+  static const String agoraAppId = "4c3f88bf7f8c40de879736f0fc8807e4";
   
   static String? userToken;
 }

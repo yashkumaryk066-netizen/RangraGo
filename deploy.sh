@@ -17,7 +17,7 @@ echo "📱 Building Frontend (Web/Mobile)..."
 cd frontend
 flutter pub get
 # Building for web as a sample deployment
-flutter build web --release --base-href "/app/"
+flutter build web --release --base-href "/"
 echo "✅ Frontend Web build completed in /frontend/build/web"
 cd ..
 

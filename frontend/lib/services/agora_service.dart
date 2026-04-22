@@ -1,9 +1,10 @@
 import 'package:agora_rtc_engine/agora_rtc_engine.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'config.dart';
 
 class AgoraService {
   late RtcEngine engine;
-  final String appId = "4c3f88bf7f8c40de879736f0fc8807e4"; // Already set
+  final String appId = AppConfig.agoraAppId;
 
 
   Future<void> initAgora() async {

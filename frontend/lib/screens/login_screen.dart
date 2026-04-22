@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:url_launcher/url_launcher.dart';
+import '../services/config.dart';
 import '../services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -16,7 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
 
   final GoogleSignIn _googleSignIn = GoogleSignIn(
-    clientId: "336631033589-nq28gonut9lsv33ocs68tq4h1dejbbb8.apps.googleusercontent.com",
+    clientId: AppConfig.googleClientId,
     scopes: ["email", "profile"],
   );
 
@@ -179,7 +181,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       // Premium Download APK Button
                       OutlinedButton.icon(
                         onPressed: () {
-                          html.window.open("https://github.com/yashkumaryk066-netizen/RangraGo/actions", "_blank");
+                          launchUrl(Uri.parse("https://github.com/yashkumaryk066-netizen/RangraGo/releases/latest/download/app-release.apk"), mode: LaunchMode.externalApplication);
                         },
                         icon: const Icon(Icons.android, color: Colors.greenAccent, size: 18),
                         label: const Text("DOWNLOAD ANDROID APP", style: TextStyle(color: Colors.white70, fontSize: 10, letterSpacing: 1.5)),

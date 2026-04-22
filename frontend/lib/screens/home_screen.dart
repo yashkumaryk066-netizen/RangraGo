@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'dart:html' as html;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_map/flutter_map.dart';
@@ -266,7 +265,6 @@ class _HomeScreenState extends State<HomeScreen> {
     // Clear both SharedPreferences and LocalStorage for maximum safety
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
-    html.window.localStorage.clear();
     if (mounted) {
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (context) => LoginScreen(onLoginSuccess: (data, isDriver) {
@@ -567,21 +565,23 @@ class _HomeScreenState extends State<HomeScreen> {
                       if (pickupLoc != null)
                         Marker(
                           point: pickupLoc!,
-                          width: 40,
-                          height: 40,
-                          child: const Icon(Icons.location_on, color: Colors.green, size: 40),
+                          width: 44,
+                          height: 44,
+                          child: const _PulseMarker(color: Colors.greenAccent),
                         ),
                       if (dropLoc != null)
                         Marker(
                           point: dropLoc!,
-                          width: 40,
-                          height: 40,
-                          child: const Icon(Icons.flag, color: Colors.red, size: 40),
+                          width: 44,
+                          height: 44,
+                          child: const _PulseMarker(color: Colors.redAccent),
                         ),
                       if (driverPos != null)
                         Marker(
                           point: driverPos!, 
-                          child: const Icon(Icons.directions_car, color: Color(0xFF06B6D4), size: 35)
+                          width: 44,
+                          height: 44,
+                          child: const _PulseMarker(color: Color(0xFF06B6D4)),
                         ),
                     ],
                   ),
@@ -788,5 +788,17 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Text(label, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
       ),
     );
+  }
+}
+
+class _PulseMarker extends StatelessWidget {
+  final Color color;
+  const _PulseMarker({required this.color});
+  @override
+  Widget build(BuildContext context) {
+    return Stack(alignment: Alignment.center, children: [
+      Container(width: 36, height: 36, decoration: BoxDecoration(shape: BoxShape.circle, color: color.withOpacity(0.2), border: Border.all(color: color.withOpacity(0.4), width: 1))),
+      Icon(Icons.circle, color: color, size: 14),
+    ]);
   }
 }

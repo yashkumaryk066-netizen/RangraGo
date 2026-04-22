@@ -130,14 +130,14 @@ class _RideBookingScreenState extends State<RideBookingScreen> {
                       point: _pickupPos,
                       width: 44,
                       height: 44,
-                      child: const Icon(Icons.location_on, color: Colors.green, size: 40),
+                      child: const _PulseMarker(color: Colors.greenAccent),
                     ),
                     if (_dropPos != null)
                       Marker(
                         point: _dropPos!,
                         width: 44,
                         height: 44,
-                        child: const Icon(Icons.flag, color: Colors.red, size: 40),
+                        child: const _PulseMarker(color: Colors.redAccent),
                       ),
                   ]),
                 ],

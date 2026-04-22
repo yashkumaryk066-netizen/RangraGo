@@ -15,8 +15,12 @@ jobs:
       - run: cd frontend && flutter pub get
       - run: cd frontend && flutter build apk --release
       
-      - name: Upload APK
-        uses: actions/upload-artifact@v3
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        if: github.ref == 'refs/heads/master'
         with:
-          name: release-apk
-          path: frontend/build/app/outputs/flutter-apk/app-release.apk
+          tag_name: latest
+          name: Latest Release
+          files: frontend/build/app/outputs/flutter-apk/app-release.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
