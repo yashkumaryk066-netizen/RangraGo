@@ -37,18 +37,11 @@ class _LoginScreenState extends State<LoginScreen> {
         if (result != null && mounted) widget.onLoginSuccess(result, _isDriver);
       }
     } catch (e) {
-      print("Google SignIn Error (Normal on Linux): $e");
-      // MOCK LOGIN FOR LINUX TESTING
-      final mockResult = await _authService.loginOrRegister(
-        email: "mock_${_isDriver ? 'driver' : 'rider'}@rangra.go",
-        name: "Test User",
-        role: _isDriver ? "DRIVER" : "RIDER",
-      );
-      if (mockResult != null && mounted) {
+      print("Google SignIn Error: $e");
+      if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("RangraGo: Mock Login Activated for Linux")),
+          const SnackBar(content: Text("Google Sign-In failed. Please try again.")),
         );
-        widget.onLoginSuccess(mockResult, _isDriver);
       }
     }
     if (mounted) setState(() => _isLoading = false);
@@ -151,33 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                       const SizedBox(height: 15),
-                      // MOCK LOGIN FOR MOBILE TESTING
-                      GestureDetector(
-                        onTap: () async {
-                          setState(() => _isLoading = true);
-                          final mockResult = await _authService.loginOrRegister(
-                            email: "mock_${_isDriver ? 'driver' : 'rider'}@rangra.go",
-                            name: "Test ${_isDriver ? 'Driver' : 'Rider'}",
-                            role: _isDriver ? "DRIVER" : "RIDER",
-                          );
-                          if (mockResult != null && mounted) {
-                            widget.onLoginSuccess(mockResult, _isDriver);
-                          }
-                          setState(() => _isLoading = false);
-                        },
-                        child: Container(
-                          height: 50, width: double.infinity,
-                          decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.05),
-                            borderRadius: BorderRadius.circular(15),
-                            border: Border.all(color: Colors.white10),
-                          ),
-                          child: const Center(
-                            child: Text("PROCEED WITH MOCK LOGIN", style: TextStyle(color: Colors.white60, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
+
                       // Premium Download APK Button
                       OutlinedButton.icon(
                         onPressed: () {
