@@ -1,6 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/foundation.dart';
 import 'screens/login_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/driver_registration_screen.dart';
@@ -12,6 +15,57 @@ void main() {
   runApp(const RangraGoApp());
 }
 
+class UpdateChecker {
+  static const int currentBuild = 1;
+
+  static Future<void> check(BuildContext context) async {
+    if (kIsWeb) return;
+    try {
+      final response = await http.get(Uri.parse('https://raw.githubusercontent.com/yashkumaryk066-netizen/RangraGo/master/version.json'));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data['build'] > currentBuild) {
+          if (context.mounted) {
+            _showUpdateDialog(context, data['message'], data['url']);
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint("Update check failed: $e");
+    }
+  }
+
+  static void _showUpdateDialog(BuildContext context, String message, String url) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        backgroundColor: const Color(0xFF1E1E2E),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Row(
+          children: [
+            Icon(Icons.system_update, color: Color(0xFF7C3AED)),
+            SizedBox(width: 10),
+            Text("Update Available", style: TextStyle(color: Colors.white)),
+          ],
+        ),
+        content: Text(message, style: const TextStyle(color: Colors.white70)),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("LATER", style: TextStyle(color: Colors.white30)),
+          ),
+          ElevatedButton(
+            onPressed: () => launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication),
+            style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF7C3AED)),
+            child: const Text("UPDATE NOW", style: TextStyle(color: Colors.white)),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class RangraGoApp extends StatefulWidget {
   const RangraGoApp({super.key});
 
@@ -20,6 +74,12 @@ class RangraGoApp extends StatefulWidget {
 }
 
 class _RangraGoAppState extends State<RangraGoApp> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => UpdateChecker.check(context));
+  }
+
   Future<Map<String, dynamic>?> _loadSession() async {
     try {
       final prefs = await SharedPreferences.getInstance();
