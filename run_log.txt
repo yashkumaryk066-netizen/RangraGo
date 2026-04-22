@@ -1,0 +1,615 @@
+build	Set up job	﻿2026-04-22T11:14:31.1110063Z Current runner version: '2.333.1'
+build	Set up job	2026-04-22T11:14:31.1134484Z ##[group]Runner Image Provisioner
+build	Set up job	2026-04-22T11:14:31.1135288Z Hosted Compute Agent
+build	Set up job	2026-04-22T11:14:31.1135928Z Version: 20260213.493
+build	Set up job	2026-04-22T11:14:31.1136498Z Commit: 5c115507f6dd24b8de37d8bbe0bb4509d0cc0fa3
+build	Set up job	2026-04-22T11:14:31.1137218Z Build Date: 2026-02-13T00:28:41Z
+build	Set up job	2026-04-22T11:14:31.1137897Z Worker ID: {7b5ea767-644c-4b60-940c-66a4c97842ac}
+build	Set up job	2026-04-22T11:14:31.1138579Z Azure Region: westus
+build	Set up job	2026-04-22T11:14:31.1139069Z ##[endgroup]
+build	Set up job	2026-04-22T11:14:31.1140486Z ##[group]Operating System
+build	Set up job	2026-04-22T11:14:31.1141535Z Ubuntu
+build	Set up job	2026-04-22T11:14:31.1142023Z 24.04.4
+build	Set up job	2026-04-22T11:14:31.1142562Z LTS
+build	Set up job	2026-04-22T11:14:31.1142992Z ##[endgroup]
+build	Set up job	2026-04-22T11:14:31.1143483Z ##[group]Runner Image
+build	Set up job	2026-04-22T11:14:31.1144024Z Image: ubuntu-24.04
+build	Set up job	2026-04-22T11:14:31.1144555Z Version: 20260413.86.1
+build	Set up job	2026-04-22T11:14:31.1145537Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260413.86/images/ubuntu/Ubuntu2404-Readme.md
+build	Set up job	2026-04-22T11:14:31.1147179Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260413.86
+build	Set up job	2026-04-22T11:14:31.1148083Z ##[endgroup]
+build	Set up job	2026-04-22T11:14:31.1149199Z ##[group]GITHUB_TOKEN Permissions
+build	Set up job	2026-04-22T11:14:31.1151297Z Contents: write
+build	Set up job	2026-04-22T11:14:31.1151822Z Metadata: read
+build	Set up job	2026-04-22T11:14:31.1152425Z ##[endgroup]
+build	Set up job	2026-04-22T11:14:31.1154978Z Secret source: Actions
+build	Set up job	2026-04-22T11:14:31.1155653Z Prepare workflow directory
+build	Set up job	2026-04-22T11:14:31.1481381Z Prepare all required actions
+build	Set up job	2026-04-22T11:14:31.1525567Z Getting action download info
+build	Set up job	2026-04-22T11:14:31.6549130Z Download action repository 'actions/checkout@v3' (SHA:f43a0e5ff2bd294095638e18286ca9a3d1956744)
+build	Set up job	2026-04-22T11:14:31.8599883Z Download action repository 'subosito/flutter-action@v2' (SHA:1a449444c387b1966244ae4d4f8c696479add0b2)
+build	Set up job	2026-04-22T11:14:32.2843090Z Download action repository 'softprops/action-gh-release@v1' (SHA:de2c0eb89ae2a093876385947365aca7b0e5f844)
+build	Set up job	2026-04-22T11:14:32.8511546Z Getting action download info
+build	Set up job	2026-04-22T11:14:33.0185585Z Download action repository 'actions/cache@v5' (SHA:27d5ce7f107fe9357f9df03efb73ab90386fccae)
+build	Set up job	2026-04-22T11:14:33.7573834Z Complete job name: build
+build	Run actions/checkout@v3	﻿2026-04-22T11:14:33.8245896Z ##[group]Run actions/checkout@v3
+build	Run actions/checkout@v3	2026-04-22T11:14:33.8246604Z with:
+build	Run actions/checkout@v3	2026-04-22T11:14:33.8246949Z   repository: yashkumaryk066-netizen/RangraGo
+build	Run actions/checkout@v3	2026-04-22T11:14:33.8247496Z   token: ***
+build	Run actions/checkout@v3	2026-04-22T11:14:33.8247775Z   ssh-strict: true
+build	Run actions/checkout@v3	2026-04-22T11:14:33.8248078Z   persist-credentials: true
+build	Run actions/checkout@v3	2026-04-22T11:14:33.8248399Z   clean: true
+build	Run actions/checkout@v3	2026-04-22T11:14:33.8248696Z   sparse-checkout-cone-mode: true
+build	Run actions/checkout@v3	2026-04-22T11:14:33.8249032Z   fetch-depth: 1
+build	Run actions/checkout@v3	2026-04-22T11:14:33.8249316Z   fetch-tags: false
+build	Run actions/checkout@v3	2026-04-22T11:14:33.8249593Z   lfs: false
+build	Run actions/checkout@v3	2026-04-22T11:14:33.8249869Z   submodules: false
+build	Run actions/checkout@v3	2026-04-22T11:14:33.8250174Z   set-safe-directory: true
+build	Run actions/checkout@v3	2026-04-22T11:14:33.8250944Z ##[endgroup]
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9091351Z Syncing repository: yashkumaryk066-netizen/RangraGo
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9092970Z ##[group]Getting Git version info
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9093552Z Working directory is '/home/runner/work/RangraGo/RangraGo'
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9094255Z [command]/usr/bin/git version
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9128620Z git version 2.53.0
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9155125Z ##[endgroup]
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9169158Z Temporarily overriding HOME='/home/runner/work/_temp/84b02cc8-3c26-4ffc-b3b6-e46e8ce9f138' before making global git config changes
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9170221Z Adding repository directory to the temporary git global config as a safe directory
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9173040Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/RangraGo/RangraGo
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9202320Z Deleting the contents of '/home/runner/work/RangraGo/RangraGo'
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9206289Z ##[group]Initializing the repository
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9209138Z [command]/usr/bin/git init /home/runner/work/RangraGo/RangraGo
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9283991Z hint: Using 'master' as the name for the initial branch. This default branch name
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9285501Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9286483Z hint: to use in all of your new repositories, which will suppress this warning,
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9287002Z hint: call:
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9287259Z hint:
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9287640Z hint: 	git config --global init.defaultBranch <name>
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9288198Z hint:
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9288591Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9289191Z hint: 'development'. The just-created branch can be renamed via this command:
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9289680Z hint:
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9289955Z hint: 	git branch -m <name>
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9290278Z hint:
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9290981Z hint: Disable this message with "git config set advice.defaultBranchName false"
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9291891Z Initialized empty Git repository in /home/runner/work/RangraGo/RangraGo/.git/
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9294696Z [command]/usr/bin/git remote add origin https://github.com/yashkumaryk066-netizen/RangraGo
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9321196Z ##[endgroup]
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9321779Z ##[group]Disabling automatic garbage collection
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9323939Z [command]/usr/bin/git config --local gc.auto 0
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9348514Z ##[endgroup]
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9349138Z ##[group]Setting up auth
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9354003Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9378930Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9644900Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9669483Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9880202Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9911162Z ##[endgroup]
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9911875Z ##[group]Fetching the repository
+build	Run actions/checkout@v3	2026-04-22T11:14:33.9919259Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --progress --no-recurse-submodules --depth=1 origin +e82c6d7e9d3413e6c58d30ce51602c159000a916:refs/remotes/origin/master
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3688594Z remote: Enumerating objects: 228, done.        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3689682Z remote: Counting objects:   0% (1/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3690888Z remote: Counting objects:   1% (3/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3691838Z remote: Counting objects:   2% (5/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3692608Z remote: Counting objects:   3% (7/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3693346Z remote: Counting objects:   4% (10/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3694050Z remote: Counting objects:   5% (12/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3694750Z remote: Counting objects:   6% (14/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3695495Z remote: Counting objects:   7% (16/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3696313Z remote: Counting objects:   8% (19/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3697023Z remote: Counting objects:   9% (21/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3697688Z remote: Counting objects:  10% (23/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3698352Z remote: Counting objects:  11% (26/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3699014Z remote: Counting objects:  12% (28/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3699491Z remote: Counting objects:  13% (30/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3700240Z remote: Counting objects:  14% (32/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3701006Z remote: Counting objects:  15% (35/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3701477Z remote: Counting objects:  16% (37/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3701920Z remote: Counting objects:  17% (39/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3702356Z remote: Counting objects:  18% (42/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3702840Z remote: Counting objects:  19% (44/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3703478Z remote: Counting objects:  20% (46/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3703881Z remote: Counting objects:  21% (48/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3704277Z remote: Counting objects:  22% (51/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3704679Z remote: Counting objects:  23% (53/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3705076Z remote: Counting objects:  24% (55/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3705467Z remote: Counting objects:  25% (57/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3705863Z remote: Counting objects:  26% (60/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3706254Z remote: Counting objects:  27% (62/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3706676Z remote: Counting objects:  28% (64/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3707073Z remote: Counting objects:  29% (67/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3707459Z remote: Counting objects:  30% (69/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3707849Z remote: Counting objects:  31% (71/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3708369Z remote: Counting objects:  32% (73/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3708782Z remote: Counting objects:  33% (76/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3709181Z remote: Counting objects:  34% (78/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3709571Z remote: Counting objects:  35% (80/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3709975Z remote: Counting objects:  36% (83/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3710359Z remote: Counting objects:  37% (85/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3711003Z remote: Counting objects:  38% (87/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3711419Z remote: Counting objects:  39% (89/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3711820Z remote: Counting objects:  40% (92/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3712224Z remote: Counting objects:  41% (94/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3712615Z remote: Counting objects:  42% (96/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3713010Z remote: Counting objects:  43% (99/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3713406Z remote: Counting objects:  44% (101/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3713813Z remote: Counting objects:  45% (103/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3714214Z remote: Counting objects:  46% (105/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3714617Z remote: Counting objects:  47% (108/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3715014Z remote: Counting objects:  48% (110/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3715590Z remote: Counting objects:  49% (112/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3715995Z remote: Counting objects:  50% (114/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3716389Z remote: Counting objects:  51% (117/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3716786Z remote: Counting objects:  52% (119/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3717185Z remote: Counting objects:  53% (121/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3717921Z remote: Counting objects:  54% (124/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3718648Z remote: Counting objects:  55% (126/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3719358Z remote: Counting objects:  56% (128/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3720047Z remote: Counting objects:  57% (130/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3720939Z remote: Counting objects:  58% (133/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3721635Z remote: Counting objects:  59% (135/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3722320Z remote: Counting objects:  60% (137/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3722986Z remote: Counting objects:  61% (140/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3723647Z remote: Counting objects:  62% (142/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3724315Z remote: Counting objects:  63% (144/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3725040Z remote: Counting objects:  64% (146/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3725700Z remote: Counting objects:  65% (149/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3726366Z remote: Counting objects:  66% (151/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3726771Z remote: Counting objects:  67% (153/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3727169Z remote: Counting objects:  68% (156/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3727564Z remote: Counting objects:  69% (158/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3727950Z remote: Counting objects:  70% (160/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3728350Z remote: Counting objects:  71% (162/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3728738Z remote: Counting objects:  72% (165/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3729321Z remote: Counting objects:  73% (167/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3729718Z remote: Counting objects:  74% (169/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3730124Z remote: Counting objects:  75% (171/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3730527Z remote: Counting objects:  76% (174/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3731180Z remote: Counting objects:  77% (176/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3731585Z remote: Counting objects:  78% (178/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3731982Z remote: Counting objects:  79% (181/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3732403Z remote: Counting objects:  80% (183/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3732795Z remote: Counting objects:  81% (185/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3733189Z remote: Counting objects:  82% (187/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3733577Z remote: Counting objects:  83% (190/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3733973Z remote: Counting objects:  84% (192/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3734368Z remote: Counting objects:  85% (194/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3734764Z remote: Counting objects:  86% (197/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3735156Z remote: Counting objects:  87% (199/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3735564Z remote: Counting objects:  88% (201/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3735972Z remote: Counting objects:  89% (203/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3736371Z remote: Counting objects:  90% (206/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3736777Z remote: Counting objects:  91% (208/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3737177Z remote: Counting objects:  92% (210/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3737591Z remote: Counting objects:  93% (213/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3737993Z remote: Counting objects:  94% (215/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3738409Z remote: Counting objects:  95% (217/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3738826Z remote: Counting objects:  96% (219/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3739230Z remote: Counting objects:  97% (222/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3739641Z remote: Counting objects:  98% (224/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3740048Z remote: Counting objects:  99% (226/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3740462Z remote: Counting objects: 100% (228/228)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3741216Z remote: Counting objects: 100% (228/228), done.        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3741850Z remote: Compressing objects:   0% (1/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3742287Z remote: Compressing objects:   1% (2/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3742703Z remote: Compressing objects:   2% (4/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3743127Z remote: Compressing objects:   3% (6/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3743545Z remote: Compressing objects:   4% (7/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3743968Z remote: Compressing objects:   5% (9/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3744391Z remote: Compressing objects:   6% (11/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3744859Z remote: Compressing objects:   7% (13/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3745288Z remote: Compressing objects:   8% (14/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3745703Z remote: Compressing objects:   9% (16/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3746128Z remote: Compressing objects:  10% (18/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3746546Z remote: Compressing objects:  11% (19/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3746969Z remote: Compressing objects:  12% (21/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3747386Z remote: Compressing objects:  13% (23/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3747794Z remote: Compressing objects:  14% (25/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3748523Z remote: Compressing objects:  15% (26/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3749275Z remote: Compressing objects:  16% (28/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3750011Z remote: Compressing objects:  17% (30/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3750978Z remote: Compressing objects:  18% (31/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3751706Z remote: Compressing objects:  19% (33/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3752407Z remote: Compressing objects:  20% (35/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3753137Z remote: Compressing objects:  21% (37/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3753840Z remote: Compressing objects:  22% (38/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3754818Z remote: Compressing objects:  23% (40/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3755250Z remote: Compressing objects:  24% (42/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3755678Z remote: Compressing objects:  25% (43/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3756101Z remote: Compressing objects:  26% (45/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3756517Z remote: Compressing objects:  27% (47/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3756947Z remote: Compressing objects:  28% (49/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3757369Z remote: Compressing objects:  29% (50/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3758075Z remote: Compressing objects:  30% (52/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3758684Z remote: Compressing objects:  31% (54/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3759423Z remote: Compressing objects:  32% (56/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3760170Z remote: Compressing objects:  33% (57/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3761051Z remote: Compressing objects:  34% (59/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3761848Z remote: Compressing objects:  35% (61/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3762593Z remote: Compressing objects:  36% (62/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3763305Z remote: Compressing objects:  37% (64/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3764018Z remote: Compressing objects:  38% (66/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3764718Z remote: Compressing objects:  39% (68/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3765423Z remote: Compressing objects:  40% (69/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3766121Z remote: Compressing objects:  41% (71/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3766832Z remote: Compressing objects:  42% (73/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3767472Z remote: Compressing objects:  43% (74/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3839223Z remote: Compressing objects:  44% (76/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3840162Z remote: Compressing objects:  45% (78/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3841272Z remote: Compressing objects:  46% (80/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3842158Z remote: Compressing objects:  47% (81/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3842852Z remote: Compressing objects:  48% (83/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3843706Z remote: Compressing objects:  49% (85/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3844207Z remote: Compressing objects:  50% (86/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3844868Z remote: Compressing objects:  51% (88/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3845313Z remote: Compressing objects:  52% (90/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3845749Z remote: Compressing objects:  53% (92/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3846188Z remote: Compressing objects:  54% (93/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3846610Z remote: Compressing objects:  55% (95/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3847033Z remote: Compressing objects:  56% (97/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3847450Z remote: Compressing objects:  57% (99/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3847875Z remote: Compressing objects:  58% (100/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3848303Z remote: Compressing objects:  59% (102/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3848740Z remote: Compressing objects:  60% (104/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3849180Z remote: Compressing objects:  61% (105/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3849605Z remote: Compressing objects:  62% (107/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3850028Z remote: Compressing objects:  63% (109/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3850453Z remote: Compressing objects:  64% (111/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3851199Z remote: Compressing objects:  65% (112/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3852312Z remote: Compressing objects:  66% (114/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3852994Z remote: Compressing objects:  67% (116/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3853755Z remote: Compressing objects:  68% (117/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3854268Z remote: Compressing objects:  69% (119/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3854692Z remote: Compressing objects:  70% (121/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3855109Z remote: Compressing objects:  71% (123/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3855534Z remote: Compressing objects:  72% (124/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3855949Z remote: Compressing objects:  73% (126/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3856550Z remote: Compressing objects:  74% (128/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3857015Z remote: Compressing objects:  75% (129/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3857435Z remote: Compressing objects:  76% (131/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3857855Z remote: Compressing objects:  77% (133/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3858266Z remote: Compressing objects:  78% (135/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3859197Z remote: Compressing objects:  79% (136/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3859633Z remote: Compressing objects:  80% (138/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3860576Z remote: Compressing objects:  81% (140/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3861286Z remote: Compressing objects:  82% (142/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3861704Z remote: Compressing objects:  83% (143/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3862119Z remote: Compressing objects:  84% (145/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3862646Z remote: Compressing objects:  85% (147/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3863082Z remote: Compressing objects:  86% (148/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3863492Z remote: Compressing objects:  87% (150/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3863905Z remote: Compressing objects:  88% (152/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3864324Z remote: Compressing objects:  89% (154/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3864759Z remote: Compressing objects:  90% (155/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3865170Z remote: Compressing objects:  91% (157/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3865586Z remote: Compressing objects:  92% (159/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3865995Z remote: Compressing objects:  93% (160/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3866416Z remote: Compressing objects:  94% (162/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3866824Z remote: Compressing objects:  95% (164/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3867244Z remote: Compressing objects:  96% (166/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3867661Z remote: Compressing objects:  97% (167/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3868072Z remote: Compressing objects:  98% (169/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3868495Z remote: Compressing objects:  99% (171/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3868917Z remote: Compressing objects: 100% (172/172)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3869541Z remote: Compressing objects: 100% (172/172), done.        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3879661Z Receiving objects:   0% (1/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3880290Z Receiving objects:   1% (3/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3881272Z Receiving objects:   2% (5/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3881825Z Receiving objects:   3% (7/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3882388Z Receiving objects:   4% (10/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3882956Z Receiving objects:   5% (12/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.3883519Z Receiving objects:   6% (14/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4121351Z Receiving objects:   7% (16/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4122268Z Receiving objects:   8% (19/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4122883Z Receiving objects:   9% (21/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4215354Z Receiving objects:  10% (23/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4216058Z Receiving objects:  11% (26/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4216668Z Receiving objects:  12% (28/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4217245Z Receiving objects:  13% (30/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4217811Z Receiving objects:  14% (32/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4218367Z Receiving objects:  15% (35/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4218914Z Receiving objects:  16% (37/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4220196Z Receiving objects:  17% (39/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4221418Z Receiving objects:  18% (42/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4222011Z Receiving objects:  19% (44/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4222575Z Receiving objects:  20% (46/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4223141Z Receiving objects:  21% (48/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4223690Z Receiving objects:  22% (51/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4224599Z Receiving objects:  23% (53/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4225208Z Receiving objects:  24% (55/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4225772Z Receiving objects:  25% (57/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4226337Z Receiving objects:  26% (60/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4226890Z Receiving objects:  27% (62/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4227454Z Receiving objects:  28% (64/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4228267Z Receiving objects:  29% (67/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4230237Z Receiving objects:  30% (69/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4231336Z Receiving objects:  31% (71/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4231971Z Receiving objects:  32% (73/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4232542Z Receiving objects:  33% (76/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4261432Z Receiving objects:  34% (78/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4262760Z Receiving objects:  35% (80/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4263485Z Receiving objects:  36% (83/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4263990Z Receiving objects:  37% (85/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4264349Z Receiving objects:  38% (87/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4264708Z Receiving objects:  39% (89/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4265329Z Receiving objects:  40% (92/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4265973Z Receiving objects:  41% (94/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4266631Z Receiving objects:  42% (96/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4267276Z Receiving objects:  43% (99/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4267918Z Receiving objects:  44% (101/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4268599Z Receiving objects:  45% (103/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4269299Z Receiving objects:  46% (105/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4269949Z Receiving objects:  47% (108/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4270818Z Receiving objects:  48% (110/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4271379Z Receiving objects:  49% (112/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4271728Z Receiving objects:  50% (114/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4272224Z Receiving objects:  51% (117/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4272858Z Receiving objects:  52% (119/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4273337Z Receiving objects:  53% (121/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4273688Z Receiving objects:  54% (124/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4274027Z Receiving objects:  55% (126/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4274361Z Receiving objects:  56% (128/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4396045Z Receiving objects:  57% (130/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4396928Z Receiving objects:  58% (133/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4397920Z Receiving objects:  59% (135/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4404005Z Receiving objects:  60% (137/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4404712Z Receiving objects:  61% (140/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4405304Z Receiving objects:  62% (142/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4406171Z Receiving objects:  63% (144/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4406732Z Receiving objects:  64% (146/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4407314Z Receiving objects:  65% (149/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4407665Z Receiving objects:  66% (151/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4442305Z Receiving objects:  67% (153/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4443402Z Receiving objects:  68% (156/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4444211Z Receiving objects:  69% (158/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4444739Z Receiving objects:  70% (160/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4445086Z Receiving objects:  71% (162/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4445428Z Receiving objects:  72% (165/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4445774Z Receiving objects:  73% (167/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4446125Z Receiving objects:  74% (169/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4450741Z Receiving objects:  75% (171/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4588010Z Receiving objects:  76% (174/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4589172Z Receiving objects:  77% (176/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4626793Z Receiving objects:  78% (178/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4627302Z Receiving objects:  79% (181/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4629420Z Receiving objects:  80% (183/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4630090Z Receiving objects:  81% (185/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4630947Z Receiving objects:  82% (187/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4631349Z Receiving objects:  83% (190/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4631727Z Receiving objects:  84% (192/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4651715Z Receiving objects:  85% (194/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4652454Z Receiving objects:  86% (197/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4652866Z Receiving objects:  87% (199/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4653238Z Receiving objects:  88% (201/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4655632Z Receiving objects:  89% (203/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4661374Z Receiving objects:  90% (206/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4662295Z Receiving objects:  91% (208/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4662980Z Receiving objects:  92% (210/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4663620Z Receiving objects:  93% (213/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4664604Z Receiving objects:  94% (215/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4664979Z Receiving objects:  95% (217/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4665328Z Receiving objects:  96% (219/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4755223Z Receiving objects:  97% (222/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4756310Z remote: Total 228 (delta 22), reused 202 (delta 21), pack-reused 0 (from 0)        
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4757460Z Receiving objects:  98% (224/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4760063Z Receiving objects:  99% (226/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4761542Z Receiving objects: 100% (228/228)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4762665Z Receiving objects: 100% (228/228), 391.75 KiB | 4.35 MiB/s, done.
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4765072Z Resolving deltas:   0% (0/22)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4766144Z Resolving deltas:   4% (1/22)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4767179Z Resolving deltas:   9% (2/22)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4768391Z Resolving deltas:  13% (3/22)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4769472Z Resolving deltas:  18% (4/22)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4770288Z Resolving deltas:  22% (5/22)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4771502Z Resolving deltas:  27% (6/22)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4772478Z Resolving deltas:  31% (7/22)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4773386Z Resolving deltas:  36% (8/22)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4774360Z Resolving deltas:  40% (9/22)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4775252Z Resolving deltas:  45% (10/22)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4775858Z Resolving deltas:  50% (11/22)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4776416Z Resolving deltas:  54% (12/22)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4776988Z Resolving deltas:  59% (13/22)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4777534Z Resolving deltas:  63% (14/22)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4778072Z Resolving deltas:  68% (15/22)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4778623Z Resolving deltas:  72% (16/22)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4779170Z Resolving deltas:  81% (18/22)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4779731Z Resolving deltas:  86% (19/22)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4780098Z Resolving deltas:  95% (21/22)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4780443Z Resolving deltas: 100% (22/22)
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4781045Z Resolving deltas: 100% (22/22), done.
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4843358Z From https://github.com/yashkumaryk066-netizen/RangraGo
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4873011Z  * [new ref]         e82c6d7e9d3413e6c58d30ce51602c159000a916 -> origin/master
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4874516Z ##[endgroup]
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4875038Z ##[group]Determining the checkout info
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4876514Z ##[endgroup]
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4877025Z ##[group]Checking out the ref
+build	Run actions/checkout@v3	2026-04-22T11:14:34.4882639Z [command]/usr/bin/git checkout --progress --force -B master refs/remotes/origin/master
+build	Run actions/checkout@v3	2026-04-22T11:14:34.5036473Z Reset branch 'master'
+build	Run actions/checkout@v3	2026-04-22T11:14:34.5039401Z branch 'master' set up to track 'origin/master'.
+build	Run actions/checkout@v3	2026-04-22T11:14:34.5045580Z ##[endgroup]
+build	Run actions/checkout@v3	2026-04-22T11:14:34.5077956Z [command]/usr/bin/git log -1 --format='%H'
+build	Run actions/checkout@v3	2026-04-22T11:14:34.5098701Z 'e82c6d7e9d3413e6c58d30ce51602c159000a916'
+build	Run subosito/flutter-action@v2	﻿2026-04-22T11:14:34.5417487Z ##[group]Run subosito/flutter-action@v2
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.5417915Z with:
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.5418173Z   channel: stable
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.5418442Z   architecture: X64
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.5418710Z   cache: false
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.5418984Z   pub-cache-path: default
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.5419304Z   dry-run: false
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.5419647Z   git-source: https://github.com/flutter/flutter.git
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.5420027Z ##[endgroup]
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.5532734Z ##[group]Run chmod +x "$GITHUB_ACTION_PATH/setup.sh"
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.5533254Z [36;1mchmod +x "$GITHUB_ACTION_PATH/setup.sh"[0m
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.5559198Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.5559659Z ##[endgroup]
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.5686170Z ##[group]Run $GITHUB_ACTION_PATH/setup.sh -p \
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.5686660Z [36;1m$GITHUB_ACTION_PATH/setup.sh -p \[0m
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.5687028Z [36;1m  -n '' \[0m
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.5687301Z [36;1m  -f '' \[0m
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.5687574Z [36;1m  -a 'X64' \[0m
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.5687878Z [36;1m  -k '' \[0m
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.5688149Z [36;1m  -c '' \[0m
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.5688409Z [36;1m  -l '' \[0m
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.5688684Z [36;1m  -d 'default' \[0m
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.5689267Z [36;1m  -g 'https://github.com/flutter/flutter.git' \[0m
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.5689677Z [36;1m  stable[0m
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.5710225Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.5710827Z ##[endgroup]
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.7273384Z ##[group]Run $GITHUB_ACTION_PATH/setup.sh \
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.7273831Z [36;1m$GITHUB_ACTION_PATH/setup.sh \[0m
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.7274179Z [36;1m  -n '3.41.7' \[0m
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.7274472Z [36;1m  -a 'x64' \[0m
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.7274866Z [36;1m  -c '/opt/hostedtoolcache/flutter/stable-3.41.7-x64' \[0m
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.7275335Z [36;1m  -d '/home/runner/.pub-cache' \[0m
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.7275664Z [36;1m  stable[0m
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.7298528Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.7298988Z ##[endgroup]
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.8695453Z   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.8696592Z                                  Dload  Upload   Total   Spent    Left  Speed
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:34.8697152Z 
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:35.2717715Z   0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:36.2725079Z   2 1447M    2 42.0M    0     0   104M      0  0:00:13 --:--:--  0:00:13  104M
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:37.2727137Z  16 1447M   16  237M    0     0   169M      0  0:00:08  0:00:01  0:00:07  169M
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:38.2727302Z  30 1447M   30  434M    0     0   180M      0  0:00:07  0:00:02  0:00:05  180M
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:39.2717407Z  43 1447M   43  631M    0     0   185M      0  0:00:07  0:00:03  0:00:04  185M
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:40.2718616Z  56 1447M   56  822M    0     0   186M      0  0:00:07  0:00:04  0:00:03  186M
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:41.2719077Z  70 1447M   70 1015M    0     0   187M      0  0:00:07  0:00:05  0:00:02  194M
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:42.2719542Z  83 1447M   83 1208M    0     0   188M      0  0:00:07  0:00:06  0:00:01  194M
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:42.5157569Z  96 1447M   96 1400M    0     0   189M      0  0:00:07  0:00:07 --:--:--  193M
+build	Run subosito/flutter-action@v2	2026-04-22T11:14:42.5158529Z 100 1447M  100 1447M    0     0   189M      0  0:00:07  0:00:07 --:--:--  192M
+build	Run cd frontend && flutter pub get	﻿2026-04-22T11:15:33.6601022Z ##[group]Run cd frontend && flutter pub get
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:33.6601399Z [36;1mcd frontend && flutter pub get[0m
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:33.6624708Z shell: /usr/bin/bash -e {0}
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:33.6624959Z env:
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:33.6625239Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.41.7-x64/flutter
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:33.6625603Z   PUB_CACHE: /home/runner/.pub-cache
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:33.6625871Z ##[endgroup]
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:37.3182239Z Resolving dependencies...
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:37.8605094Z Downloading packages...
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7864078Z   agora_rtc_engine 6.6.2 (6.6.3 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7864633Z   ffi 1.2.1 (2.2.0 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7865006Z   flutter_lints 2.0.3 (6.0.0 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7865403Z   flutter_map 6.2.1 (8.3.0 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7865973Z   geolocator 9.0.2 (14.0.2 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7866488Z   geolocator_android 4.6.2 (5.0.2 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7866937Z   geolocator_web 2.2.1 (4.1.3 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7867493Z   geolocator_windows 0.1.3 (0.2.5 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7867986Z   google_sign_in 6.3.0 (7.2.0 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7868458Z   google_sign_in_android 6.2.1 (7.2.10 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7868995Z   google_sign_in_ios 5.9.0 (6.3.0 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7869602Z   google_sign_in_platform_interface 2.5.0 (3.1.0 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7870245Z   google_sign_in_web 0.12.4+4 (1.1.3 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7871182Z   iris_method_channel 2.2.4 (2.2.5 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7871704Z   js 0.6.7 (0.7.2 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7872427Z   lints 2.1.1 (6.1.0 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7893163Z   maplibre_gl 0.16.0 (0.25.0 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7893740Z   maplibre_gl_platform_interface 0.16.0 (0.25.0 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7894309Z   meta 1.17.0 (1.18.2 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7895087Z   mgrs_dart 2.0.0 (3.0.0 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7895522Z   path_provider_windows 2.0.7 (2.3.0 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7896013Z   permission_handler 10.4.5 (12.0.1 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7896558Z   permission_handler_android 10.3.6 (13.0.1 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7897149Z   permission_handler_apple 9.1.4 (9.4.7 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7897778Z   permission_handler_platform_interface 3.12.0 (4.3.0 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7898397Z   permission_handler_windows 0.1.3 (0.2.1 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7898868Z   proj4dart 2.1.0 (3.0.0 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7899290Z   socket_io_client 2.0.3+1 (3.1.4 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7899731Z   socket_io_common 2.0.3 (3.1.1 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7900168Z   test_api 0.7.10 (0.7.11 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7900558Z   unicode 0.3.1 (1.1.9 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7901190Z   vector_math 2.2.0 (2.3.0 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7901599Z   vm_service 15.0.2 (15.1.0 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7902007Z   win32 2.6.1 (6.0.1 available)
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7903794Z Got dependencies!
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7904621Z 34 packages have newer versions incompatible with dependency constraints.
+build	Run cd frontend && flutter pub get	2026-04-22T11:15:41.7905634Z Try `flutter pub outdated` for more information.
+build	Run cd frontend && flutter build apk --release	﻿2026-04-22T11:15:42.2287797Z ##[group]Run cd frontend && flutter build apk --release
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.2288209Z [36;1mcd frontend && flutter build apk --release[0m
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.2309349Z shell: /usr/bin/bash -e {0}
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.2309570Z env:
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.2309841Z   FLUTTER_ROOT: /opt/hostedtoolcache/flutter/stable-3.41.7-x64/flutter
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.2310212Z   PUB_CACHE: /home/runner/.pub-cache
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.2310446Z ##[endgroup]
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.4510460Z Resolving dependencies...
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.5489526Z Downloading packages...
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6142121Z   agora_rtc_engine 6.6.2 (6.6.3 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6142607Z   ffi 1.2.1 (2.2.0 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6143029Z   flutter_lints 2.0.3 (6.0.0 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6143480Z   flutter_map 6.2.1 (8.3.0 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6143891Z   geolocator 9.0.2 (14.0.2 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6144313Z   geolocator_android 4.6.2 (5.0.2 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6144747Z   geolocator_web 2.2.1 (4.1.3 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6145216Z   geolocator_windows 0.1.3 (0.2.5 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6145649Z   google_sign_in 6.3.0 (7.2.0 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6146089Z   google_sign_in_android 6.2.1 (7.2.10 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6146561Z   google_sign_in_ios 5.9.0 (6.3.0 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6147072Z   google_sign_in_platform_interface 2.5.0 (3.1.0 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6147606Z   google_sign_in_web 0.12.4+4 (1.1.3 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6148069Z   iris_method_channel 2.2.4 (2.2.5 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6148485Z   js 0.6.7 (0.7.2 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6148834Z   lints 2.1.1 (6.1.0 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6149196Z   maplibre_gl 0.16.0 (0.25.0 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6149702Z   maplibre_gl_platform_interface 0.16.0 (0.25.0 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6150199Z   meta 1.17.0 (1.18.2 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6150501Z   mgrs_dart 2.0.0 (3.0.0 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6150959Z   path_provider_windows 2.0.7 (2.3.0 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6151284Z   permission_handler 10.4.5 (12.0.1 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6151619Z   permission_handler_android 10.3.6 (13.0.1 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6151961Z   permission_handler_apple 9.1.4 (9.4.7 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6152339Z   permission_handler_platform_interface 3.12.0 (4.3.0 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6152727Z   permission_handler_windows 0.1.3 (0.2.1 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6153030Z   proj4dart 2.1.0 (3.0.0 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6153289Z   socket_io_client 2.0.3+1 (3.1.4 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6153567Z   socket_io_common 2.0.3 (3.1.1 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6153835Z   test_api 0.7.10 (0.7.11 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6154078Z   unicode 0.3.1 (1.1.9 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6154530Z   vector_math 2.2.0 (2.3.0 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6154782Z   vm_service 15.0.2 (15.1.0 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6155035Z   win32 2.6.1 (6.0.1 available)
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6155276Z Got dependencies!
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6155602Z 34 packages have newer versions incompatible with dependency constraints.
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:15:42.6156040Z Try `flutter pub outdated` for more information.
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:17:20.5283517Z Running Gradle task 'assembleRelease'...                        
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:17:20.5287391Z Checking the license for package NDK (Side by side) 27.0.12077973 in /usr/local/lib/android/sdk/licenses
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:17:20.5289984Z License for package NDK (Side by side) 27.0.12077973 accepted.
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:17:20.5295303Z Preparing "Install NDK (Side by side) 27.0.12077973 v.27.0.12077973".
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:17:33.5145153Z "Install NDK (Side by side) 27.0.12077973 v.27.0.12077973" ready.
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:17:33.5146744Z Installing NDK (Side by side) 27.0.12077973 in /usr/local/lib/android/sdk/ndk/27.0.12077973
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:17:33.5149926Z "Install NDK (Side by side) 27.0.12077973 v.27.0.12077973" complete.
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:17:33.8172277Z "Install NDK (Side by side) 27.0.12077973 v.27.0.12077973" finished.
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:18:04.6231296Z 
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:18:04.6232358Z FAILURE: Build failed with an exception.
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:18:04.6291254Z 
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:18:04.6313197Z * What went wrong:
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:18:04.6341390Z A problem occurred configuring project ':maplibre_gl'.
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:18:04.6361887Z > Could not create an instance of type com.android.build.api.variant.impl.LibraryVariantBuilderImpl.
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:18:04.6364523Z    > Namespace not specified. Specify a namespace in the module's build file: /home/runner/.pub-cache/hosted/pub.dev/maplibre_gl-0.16.0/android/build.gradle. See https://d.android.com/r/tools/upgrade-assistant/set-namespace for information about setting the namespace.
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:18:04.6366538Z 
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:18:04.6368305Z      If you've specified the package attribute in the source AndroidManifest.xml, you can use the AGP Upgrade Assistant to migrate to the namespace value in the build file. Refer to https://d.android.com/r/tools/upgrade-assistant/agp-upgrade-assistant for general information about using the AGP Upgrade Assistant.
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:18:04.6370331Z 
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:18:04.6370897Z * Try:
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:18:04.6372128Z > Run with --stacktrace option to get the stack trace.
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:18:04.6372863Z > Run with --info or --debug option to get more log output.
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:18:04.6374875Z > Run with --scan to get full insights.
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:18:04.6375550Z > Get more help at https://help.gradle.org.
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:18:04.6376036Z 
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:18:04.6378473Z BUILD FAILED in 2m 21s
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:18:05.1301654Z Running Gradle task 'assembleRelease'...                          142.1s
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:18:05.1399409Z Gradle task assembleRelease failed with exit code 1
+build	Run cd frontend && flutter build apk --release	2026-04-22T11:18:05.1458841Z ##[error]Process completed with exit code 1.
+build	Post Run subosito/flutter-action@v2	﻿2026-04-22T11:18:05.1649666Z Post job cleanup.
+build	Post Run actions/checkout@v3	﻿2026-04-22T11:18:05.1718940Z Post job cleanup.
+build	Post Run actions/checkout@v3	2026-04-22T11:18:05.2438185Z [command]/usr/bin/git version
+build	Post Run actions/checkout@v3	2026-04-22T11:18:05.2473138Z git version 2.53.0
+build	Post Run actions/checkout@v3	2026-04-22T11:18:05.2518535Z Temporarily overriding HOME='/home/runner/work/_temp/e21c78eb-6d9f-4c8a-8dae-43b766e2039a' before making global git config changes
+build	Post Run actions/checkout@v3	2026-04-22T11:18:05.2519881Z Adding repository directory to the temporary git global config as a safe directory
+build	Post Run actions/checkout@v3	2026-04-22T11:18:05.2524140Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/RangraGo/RangraGo
+build	Post Run actions/checkout@v3	2026-04-22T11:18:05.2555180Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build	Post Run actions/checkout@v3	2026-04-22T11:18:05.2583362Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build	Post Run actions/checkout@v3	2026-04-22T11:18:05.2797511Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build	Post Run actions/checkout@v3	2026-04-22T11:18:05.2816685Z http.https://github.com/.extraheader
+build	Post Run actions/checkout@v3	2026-04-22T11:18:05.2828199Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+build	Post Run actions/checkout@v3	2026-04-22T11:18:05.2856852Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build	Complete job	﻿2026-04-22T11:18:05.3191001Z Cleaning up orphan processes
+build	Complete job	2026-04-22T11:18:05.3464260Z Terminate orphan process: pid (2773) (java)
+build	Complete job	2026-04-22T11:18:05.3486636Z Terminate orphan process: pid (2932) (java)
+build	Complete job	2026-04-22T11:18:05.3527495Z ##[warning]Node.js 20 actions are deprecated. The following actions are running on Node.js 20 and may not work as expected: actions/checkout@v3. Actions will be forced to run with Node.js 24 by default starting June 2nd, 2026. Node.js 20 will be removed from the runner on September 16th, 2026. Please check if updated versions of these actions are available that support Node.js 24. To opt into Node.js 24 now, set the FORCE_JAVASCRIPT_ACTIONS_TO_NODE24=true environment variable on the runner or in your workflow file. Once Node.js 24 becomes the default, you can temporarily opt out by setting ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
