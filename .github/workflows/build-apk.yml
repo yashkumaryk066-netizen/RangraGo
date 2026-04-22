@@ -18,9 +18,6 @@ jobs:
       - run: cd frontend && flutter pub get
       - run: cd frontend && flutter build apk --release
       
-      - name: Get SHA-1 Fingerprint
-        run: keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android | grep SHA1
-      
       - name: Create Release
         uses: softprops/action-gh-release@v1
         if: github.ref == 'refs/heads/master'
@@ -30,3 +27,7 @@ jobs:
           files: frontend/build/app/outputs/flutter-apk/app-release.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get SHA-1 Fingerprint
+        run: keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android | grep SHA1
+        continue-on-error: true
