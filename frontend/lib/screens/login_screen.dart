@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../services/config.dart';
@@ -145,19 +146,19 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                       const SizedBox(height: 15),
 
-                      // Premium Download APK Button
-                      OutlinedButton.icon(
-                        onPressed: () {
-                          launchUrl(Uri.parse("https://github.com/yashkumaryk066-netizen/RangraGo/releases/latest/download/app-release.apk"), mode: LaunchMode.externalApplication);
-                        },
-                        icon: const Icon(Icons.android, color: Colors.greenAccent, size: 18),
-                        label: const Text("DOWNLOAD ANDROID APP", style: TextStyle(color: Colors.white70, fontSize: 10, letterSpacing: 1.5)),
-                        style: OutlinedButton.styleFrom(
-                          side: BorderSide(color: Colors.greenAccent.withOpacity(0.3)),
-                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                      if (kIsWeb)
+                        OutlinedButton.icon(
+                          onPressed: () {
+                            launchUrl(Uri.parse("https://github.com/yashkumaryk066-netizen/RangraGo/releases/latest/download/app-release.apk"), mode: LaunchMode.externalApplication);
+                          },
+                          icon: const Icon(Icons.android, color: Colors.greenAccent, size: 18),
+                          label: const Text("DOWNLOAD ANDROID APP", style: TextStyle(color: Colors.white70, fontSize: 10, letterSpacing: 1.5)),
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(color: Colors.greenAccent.withOpacity(0.3)),
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                          ),
                         ),
-                      ),
                     ],
                   ),
                 ),

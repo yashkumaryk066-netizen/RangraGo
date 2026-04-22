@@ -68,7 +68,10 @@ class _RangraGoAppState extends State<RangraGoApp> {
         future: _loadSession(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Scaffold(body: Center(child: CircularProgressIndicator()));
+            return const Scaffold(
+              backgroundColor: Color(0xFF070712),
+              body: Center(child: CircularProgressIndicator(color: Color(0xFF7C3AED))),
+            );
           }
 
           final session = snapshot.data;
