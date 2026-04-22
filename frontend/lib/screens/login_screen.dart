@@ -175,6 +175,20 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         ),
                       ),
+                      const SizedBox(height: 10),
+                      // Premium Download APK Button
+                      OutlinedButton.icon(
+                        onPressed: () {
+                          html.window.open("https://github.com/yashkumaryk066-netizen/RangraGo/actions", "_blank");
+                        },
+                        icon: const Icon(Icons.android, color: Colors.greenAccent, size: 18),
+                        label: const Text("DOWNLOAD ANDROID APP", style: TextStyle(color: Colors.white70, fontSize: 10, letterSpacing: 1.5)),
+                        style: OutlinedButton.styleFrom(
+                          side: BorderSide(color: Colors.greenAccent.withOpacity(0.3)),
+                          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                        ),
+                      ),
                     ],
                   ),
                 ),
