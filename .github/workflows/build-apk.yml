@@ -29,5 +29,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Get SHA-1 Fingerprint
-        run: keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android | grep SHA1
+        run: |
+          KEYSTORE_PATH=$(find ~ -name "debug.keystore" | head -n 1)
+          if [ -z "$KEYSTORE_PATH" ]; then
+            KEYSTORE_PATH=$(find . -name "debug.keystore" | head -n 1)
+          fi
+          echo "Using keystore at: $KEYSTORE_PATH"
+          keytool -list -v -keystore "$KEYSTORE_PATH" -alias androiddebugkey -storepass android -keypass android | grep SHA1
         continue-on-error: true
