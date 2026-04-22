@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../services/auth_service.dart';
 
 class ProfileScreen extends StatefulWidget {
   final Map<String, dynamic> userData;
-  const ProfileScreen({super.key, required this.userData});
+  final Function(Map<String, dynamic>) onUpdate;
+  const ProfileScreen({super.key, required this.userData, required this.onUpdate});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -25,14 +28,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _handleUpdate() async {
     setState(() => isLoading = true);
-    final success = await _authService.updateProfile({
+    final updatedUser = await _authService.updateProfile({
       "name": _nameController.text,
       "phone": _phoneController.text,
     });
     
-    if (success) {
+    if (updatedUser != null) {
+      // Save to SharedPreferences
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('user_data', jsonEncode(updatedUser));
+      
+      // Update UI
+      widget.onUpdate(updatedUser);
+      
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Profile Updated Successfully")));
       setState(() => isEditing = false);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Update Failed")));
     }
     setState(() => isLoading = false);
   }

@@ -16,27 +16,29 @@ class _DriverRegistrationScreenState extends State<DriverRegistrationScreen> {
   final TextEditingController _modelCtrl = TextEditingController();
   final TextEditingController _numberCtrl = TextEditingController();
   final TextEditingController _licenseCtrl = TextEditingController();
+  final TextEditingController _aadhaarCtrl = TextEditingController();
   String _selectedType = "CAR";
   bool _isLoading = false;
 
   Future<void> _submit() async {
-    if (_modelCtrl.text.isEmpty || _numberCtrl.text.isEmpty || _licenseCtrl.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Please fill all details")));
+    if (_modelCtrl.text.isEmpty || _numberCtrl.text.isEmpty || _licenseCtrl.text.isEmpty || _aadhaarCtrl.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Sabhi details bharna zaroori hai!")));
       return;
     }
 
     setState(() => _isLoading = true);
-    final success = await _authService.updateProfile({
+    final updatedUser = await _authService.updateProfile({
       "vehicleInfo": {
         "model": _modelCtrl.text,
         "number": _numberCtrl.text,
         "type": _selectedType,
       },
       "licenseNumber": _licenseCtrl.text,
+      "aadhaarNumber": _aadhaarCtrl.text,
       "isRegistered": true,
     });
 
-    if (success) {
+    if (updatedUser != null) {
       widget.onComplete();
     } else {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Registration failed. Try again.")));
@@ -65,9 +67,11 @@ class _DriverRegistrationScreenState extends State<DriverRegistrationScreen> {
 
             _buildInput("VEHICLE MODEL", "e.g. Maruti Suzuki Swift", _modelCtrl, Icons.directions_car),
             const SizedBox(height: 15),
-            _buildInput("PLATENUMBER", "e.g. BR 01 AB 1234", _numberCtrl, Icons.numbers),
+            _buildInput("PLATE NUMBER", "e.g. BR 01 AB 1234", _numberCtrl, Icons.numbers),
             const SizedBox(height: 15),
             _buildInput("DRIVING LICENSE", "Enter DL Number", _licenseCtrl, Icons.badge),
+            const SizedBox(height: 15),
+            _buildInput("AADHAAR CARD", "Enter 12-digit Aadhaar", _aadhaarCtrl, Icons.fingerprint, keyboardType: TextInputType.number),
             const SizedBox(height: 25),
 
             const Align(
@@ -123,7 +127,7 @@ class _DriverRegistrationScreenState extends State<DriverRegistrationScreen> {
     );
   }
 
-  Widget _buildInput(String label, String hint, TextEditingController ctrl, IconData icon) {
+  Widget _buildInput(String label, String hint, TextEditingController ctrl, IconData icon, {TextInputType? keyboardType}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -134,6 +138,7 @@ class _DriverRegistrationScreenState extends State<DriverRegistrationScreen> {
           decoration: BoxDecoration(color: Colors.white.withOpacity(0.05), borderRadius: BorderRadius.circular(15)),
           child: TextField(
             controller: ctrl,
+            keyboardType: keyboardType,
             style: const TextStyle(color: Colors.white),
             decoration: InputDecoration(
               prefixIcon: Icon(icon, color: Colors.white24, size: 20),

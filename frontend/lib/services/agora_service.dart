@@ -17,6 +17,13 @@ class AgoraService {
       channelProfile: ChannelProfileType.channelProfileCommunication,
     ));
 
+    // AUDIO ENABLE KAREIN (Zaroori hai)
+    await engine.enableAudio();
+    await engine.setAudioProfile(
+      profile: AudioProfileType.audioProfileDefault,
+      scenario: AudioScenarioType.audioScenarioGameStreaming,
+    );
+
     // Register event handlers
     engine.registerEventHandler(
       RtcEngineEventHandler(

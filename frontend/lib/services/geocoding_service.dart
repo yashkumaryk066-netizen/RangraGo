@@ -4,34 +4,56 @@ import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 
 class GeocodingService {
-  // Nominatim - OpenStreetMap ka free geocoding API
-  // Covers entire India - every city, village, mohalla
-  static const String _baseUrl = "https://nominatim.openstreetmap.org";
-
+  // Photon API - Advanced A to Z Location Search (Key-less)
+  
   static Future<List<Map<String, dynamic>>> searchPlaces(String query) async {
     if (query.trim().isEmpty) return [];
 
     try {
+      final currentPos = await getCurrentLocation();
+      String bias = "location_bias=78,20"; 
+      if (currentPos != null) {
+        bias = "lat=${currentPos.latitude}&lon=${currentPos.longitude}";
+      }
+
       final uri = Uri.parse(
-        "$_baseUrl/search?q=${Uri.encodeComponent(query)}&countrycodes=in&format=json&limit=8&addressdetails=1",
+        "https://photon.komoot.io/api/?q=${Uri.encodeComponent(query)}&limit=15&$bias", 
       );
 
-      final response = await http.get(uri, headers: {
-        "Accept": "application/json",
-        "User-Agent": "RangraGo/1.0 (rangra.go.app)",
-      });
+      final response = await http.get(uri);
 
       if (response.statusCode == 200) {
-        final List data = jsonDecode(response.body);
-        return data.map<Map<String, dynamic>>((item) => {
-          "name": item["display_name"],
-          "short": _shortName(item),
-          "lat": double.parse(item["lat"]),
-          "lng": double.parse(item["lon"]),
+        final data = jsonDecode(response.body);
+        final List features = data["features"];
+        
+        return features.map<Map<String, dynamic>>((f) {
+          final p = f["properties"];
+          final coords = f["geometry"]["coordinates"];
+          
+          String name = p["name"] ?? "";
+          String house = p["housenumber"] ?? "";
+          String street = p["street"] ?? "";
+          String suburb = p["suburb"] ?? p["district"] ?? "";
+          String city = p["city"] ?? p["state"] ?? "";
+          
+          String fullName = [
+            if (name.isNotEmpty) name,
+            if (house.isNotEmpty) house,
+            if (street.isNotEmpty) street,
+            if (suburb.isNotEmpty) suburb,
+            if (city.isNotEmpty) city,
+          ].join(", ");
+
+          return {
+            "name": fullName,
+            "short": name.isNotEmpty ? name : (street.isNotEmpty ? "$house $street" : city),
+            "lat": coords[1],
+            "lng": coords[0],
+          };
         }).toList();
       }
     } catch (e) {
-      print("Geocoding error: $e");
+      print("Search error: $e");
     }
     return [];
   }
@@ -39,14 +61,19 @@ class GeocodingService {
   static Future<String?> reverseGeocode(LatLng pos) async {
     try {
       final uri = Uri.parse(
-        "$_baseUrl/reverse?lat=${pos.latitude}&lon=${pos.longitude}&format=json",
+        "https://photon.komoot.io/reverse?lat=${pos.latitude}&lon=${pos.longitude}",
       );
-      final response = await http.get(uri, headers: {
-        "User-Agent": "RangraGo/1.0",
-      });
+      final response = await http.get(uri);
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        return data["display_name"];
+        final List features = data["features"];
+        if (features.isNotEmpty) {
+          final p = features[0]["properties"];
+          String name = p["name"] ?? "";
+          String street = p["street"] ?? "";
+          String city = p["city"] ?? p["state"] ?? "";
+          return "${name.isNotEmpty ? "$name, " : ""}${street.isNotEmpty ? "$street, " : ""}$city";
+        }
       }
     } catch (e) {
       print("Reverse geocode error: $e");
@@ -54,37 +81,27 @@ class GeocodingService {
     return null;
   }
 
-  static String _shortName(Map<String, dynamic> item) {
-    final addr = item["address"] ?? {};
-    final parts = <String>[];
-
-    for (final key in ["road", "suburb", "city", "town", "village", "state_district", "state"]) {
-      final val = addr[key];
-      if (val != null && val.toString().isNotEmpty) {
-        parts.add(val.toString());
-        if (parts.length >= 3) break;
-      }
-    }
-
-    return parts.isNotEmpty ? parts.join(", ") : item["display_name"];
-  }
-
   static Future<LatLng?> getCurrentLocation() async {
-    bool serviceEnabled;
-    LocationPermission permission;
+    try {
+      bool serviceEnabled;
+      LocationPermission permission;
 
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) return null;
+      serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) return null;
 
-    permission = await Geolocator.checkPermission();
-    if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
-      if (permission == LocationPermission.denied) return null;
+      permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) return null;
+      }
+
+      if (permission == LocationPermission.deniedForever) return null;
+
+      final pos = await Geolocator.getCurrentPosition();
+      return LatLng(pos.latitude, pos.longitude);
+    } catch (e) {
+      print("GPS blocked or non-secure origin: $e");
+      return null;
     }
-
-    if (permission == LocationPermission.deniedForever) return null;
-
-    final pos = await Geolocator.getCurrentPosition();
-    return LatLng(pos.latitude, pos.longitude);
   }
 }

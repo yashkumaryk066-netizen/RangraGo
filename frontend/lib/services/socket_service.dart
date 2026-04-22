@@ -4,7 +4,15 @@ import 'config.dart';
 class SocketService {
   late IO.Socket socket;
 
-  void connect(String userId, Function(dynamic) onIncomingCall, Function(dynamic) onRideAccepted) {
+  void connect({
+    required String userId,
+    required Function(dynamic) onIncomingCall,
+    required Function(dynamic) onRideAccepted,
+    required Function(dynamic) onRideStarted,
+    required Function(dynamic) onRideCompleted,
+    required Function(dynamic) onRideCancelled,
+    Function(dynamic)? onNewRide, // For drivers
+  }) {
     socket = IO.io(AppConfig.socketUrl, <String, dynamic>{
       'transports': ['websocket'],
       'autoConnect': false,
@@ -19,9 +27,20 @@ class SocketService {
 
     socket.on('incoming-call', (data) => onIncomingCall(data));
     socket.on('ride-accepted', (data) => onRideAccepted(data));
+    socket.on('ride-started', (data) => onRideStarted(data));
+    socket.on('ride-completed', (data) => onRideCompleted(data));
+    socket.on('ride-cancelled', (data) => onRideCancelled(data));
+    
+    if (onNewRide != null) {
+      socket.on('new-ride', (data) => onNewRide(data));
+    }
 
     socket.onError((e) => print('Socket error: $e'));
     socket.onDisconnect((_) => print('Socket disconnected'));
+  }
+
+  void updateStatus(String userId, bool isOnline) {
+    socket.emit('update-status', {'userId': userId, 'isOnline': isOnline});
   }
 
   void callUser(String to, String from, String rideId) {

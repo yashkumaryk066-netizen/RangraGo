@@ -6,7 +6,7 @@ import '../models/ride_model.dart';
 import '../services/geocoding_service.dart';
 
 class RideBookingScreen extends StatefulWidget {
-  final Function(String, String, String) onBook; 
+  final Function(String, String, LatLng, LatLng, String, double) onBook; 
   const RideBookingScreen({super.key, required this.onBook});
 
   @override
@@ -91,7 +91,7 @@ class _RideBookingScreenState extends State<RideBookingScreen> {
                 mapController: _mapController,
                 options: MapOptions(
                   initialCenter: _pickupPos,
-                  initialZoom: 11.0,
+                  initialZoom: 13.0,
                   onTap: (tapPos, latLng) async {
                     if (_activeField != null) {
                       final name = await GeocodingService.reverseGeocode(latLng);
@@ -112,16 +112,17 @@ class _RideBookingScreenState extends State<RideBookingScreen> {
                   },
                 ),
                 children: [
+                  // GOOGLE MAPS TILES (No API Key Required)
                   TileLayer(
-                    urlTemplate: "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                    urlTemplate: "https://mt0.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}",
                     userAgentPackageName: "com.rangra.go",
                   ),
                   if (_dropPos != null)
                     PolylineLayer(polylines: [
                       Polyline(
-                        points: _routePoints,
+                        points: [_pickupPos, _dropPos!],
                         strokeWidth: 4.0,
-                        color: Colors.deepPurpleAccent,
+                        color: Colors.blueAccent,
                       ),
                     ]),
                   MarkerLayer(markers: [
@@ -129,14 +130,14 @@ class _RideBookingScreenState extends State<RideBookingScreen> {
                       point: _pickupPos,
                       width: 44,
                       height: 44,
-                      child: const _PulseMarker(color: Colors.greenAccent),
+                      child: const Icon(Icons.location_on, color: Colors.green, size: 40),
                     ),
                     if (_dropPos != null)
                       Marker(
                         point: _dropPos!,
                         width: 44,
                         height: 44,
-                        child: const _PulseMarker(color: Colors.redAccent),
+                        child: const Icon(Icons.flag, color: Colors.red, size: 40),
                       ),
                   ]),
                 ],
@@ -166,12 +167,12 @@ class _RideBookingScreenState extends State<RideBookingScreen> {
                           if (pos != null) {
                             final name = await GeocodingService.reverseGeocode(pos);
                             if (name != null && mounted) {
-                              setState(() {
-                                _pickupController.text = name;
-                                _pickupPos = pos;
-                                _activeField = null;
-                              });
-                              _mapController.move(pos, 15.0);
+                                setState(() {
+                                  _pickupController.text = name;
+                                  _pickupPos = pos;
+                                  _activeField = null;
+                                });
+                                _mapController.move(pos, 15.0);
                             }
                           }
                         } catch (e) {
@@ -237,8 +238,10 @@ class _RideBookingScreenState extends State<RideBookingScreen> {
                 const SizedBox(height: 24),
                 GestureDetector(
                   onTap: () {
-                    if (_pickupController.text.isNotEmpty && _dropController.text.isNotEmpty) {
-                      widget.onBook(_pickupController.text, _dropController.text, selectedVehicle);
+                    if (_pickupController.text.isNotEmpty && _dropController.text.isNotEmpty && _dropPos != null) {
+                      const Distance distance = Distance();
+                      double dist = distance.as(LengthUnit.Meter, _pickupPos, _dropPos!) / 1000.0;
+                      widget.onBook(_pickupController.text, _dropController.text, _pickupPos, _dropPos!, selectedVehicle, dist);
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Pickup aur Drop dono fill karo")));
                     }

@@ -125,27 +125,58 @@ class _LoginScreenState extends State<LoginScreen> {
                 const SizedBox(height: 28),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 32),
-                  child: _isLoading
-                    ? const CircularProgressIndicator(color: Color(0xFF7C3AED))
-                    : GestureDetector(
-                        onTap: _handleGoogleSignIn,
-                        child: Container(
-                          height: 64, width: double.infinity,
-                          decoration: BoxDecoration(
-                            gradient: const LinearGradient(colors: [Color(0xFF7C3AED), Color(0xFF06B6D4)]),
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [BoxShadow(color: const Color(0xFF7C3AED).withOpacity(0.4), blurRadius: 24, offset: const Offset(0, 10))],
+                  child: Column(
+                    children: [
+                      _isLoading
+                        ? const CircularProgressIndicator(color: Color(0xFF7C3AED))
+                        : GestureDetector(
+                            onTap: _handleGoogleSignIn,
+                            child: Container(
+                              height: 64, width: double.infinity,
+                              decoration: BoxDecoration(
+                                gradient: const LinearGradient(colors: [Color(0xFF7C3AED), Color(0xFF06B6D4)]),
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [BoxShadow(color: const Color(0xFF7C3AED).withOpacity(0.4), blurRadius: 24, offset: const Offset(0, 10))],
+                              ),
+                              child: const Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.g_mobiledata, size: 36, color: Colors.white),
+                                  SizedBox(width: 10),
+                                  Text("Continue with Google", style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                            ),
                           ),
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(Icons.g_mobiledata, size: 36, color: Colors.white),
-                              SizedBox(width: 10),
-                              Text("Continue with Google", style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold)),
-                            ],
+                      const SizedBox(height: 15),
+                      // MOCK LOGIN FOR MOBILE TESTING
+                      GestureDetector(
+                        onTap: () async {
+                          setState(() => _isLoading = true);
+                          final mockResult = await _authService.loginOrRegister(
+                            email: "mock_${_isDriver ? 'driver' : 'rider'}@rangra.go",
+                            name: "Test ${_isDriver ? 'Driver' : 'Rider'}",
+                            role: _isDriver ? "DRIVER" : "RIDER",
+                          );
+                          if (mockResult != null && mounted) {
+                            widget.onLoginSuccess(mockResult, _isDriver);
+                          }
+                          setState(() => _isLoading = false);
+                        },
+                        child: Container(
+                          height: 50, width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Colors.white.withOpacity(0.05),
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(color: Colors.white10),
+                          ),
+                          child: const Center(
+                            child: Text("PROCEED WITH MOCK LOGIN", style: TextStyle(color: Colors.white60, fontSize: 12, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
                           ),
                         ),
                       ),
+                    ],
+                  ),
                 ),
                 const Spacer(),
                 const Text("RangraGo — Ride Smart, Ride Fast",

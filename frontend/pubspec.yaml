@@ -12,11 +12,13 @@ dependencies:
   agora_rtc_engine: ^6.1.0
   permission_handler: ^10.2.0
   flutter_map: ^6.1.0
+  maplibre_gl: ^0.16.0
   latlong2: ^0.9.0
   google_sign_in: ^6.2.1
   http: ^1.6.0
   provider: ^6.0.5
   geolocator: ^9.0.2
+  shared_preferences: ^2.2.2
 
 dev_dependencies:
   flutter_test:

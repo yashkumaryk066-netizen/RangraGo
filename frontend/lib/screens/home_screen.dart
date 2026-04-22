@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
+import 'dart:html' as html;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:geolocator/geolocator.dart';
+import 'dart:async';
 import '../services/socket_service.dart';
 import '../models/ride_model.dart';
 import '../services/config.dart';
@@ -40,80 +44,119 @@ class _HomeScreenState extends State<HomeScreen> {
   String? remoteId;
   String? rideOtp;
   double? rideFare;
-  LatLng? pickupLoc;
+  LatLng? pickupLoc = const LatLng(28.6139, 77.2090); // Default: Delhi
   LatLng? dropLoc;
+  LatLng? driverPos; // Live Driver Tracking
+  String? driverDistance; // e.g. "1.5 km"
   List<LatLng> polylinePoints = [];
+  Timer? _locationTimer;
 
   @override
   void initState() {
     super.initState();
     _setupSocket();
+    if (widget.isDriver) {
+      _startLocationUpdates();
+    }
+  }
+
+  void _startLocationUpdates() {
+    _locationTimer = Timer.periodic(const Duration(seconds: 30), (timer) async {
+      if (isOnline) {
+        void _updateLocation() async {
+          final pos = await Geolocator.getCurrentPosition();
+          if (pos != null) {
+            // Local state update for distance checks
+            setState(() => driverPos = LatLng(pos.latitude, pos.longitude));
+            
+            await http.put(
+              Uri.parse("${AppConfig.authUrl}/location"),
+              headers: {
+                "Content-Type": "application/json",
+                "Authorization": "Bearer ${AppConfig.userToken}"
+              },
+              body: jsonEncode({"lat": pos.latitude, "lng": pos.longitude}),
+            );
+          }
+        }
+        _updateLocation();
+      }
+    });
   }
 
   @override
   void dispose() {
+    _locationTimer?.cancel();
     _socketService.disconnect();
     super.dispose();
   }
 
   void _setupSocket() {
-    _socketService.connect(widget.userId, (data) {
-      _showIncomingCallDialog(data['from'], data['rideId']);
-    }, (data) {
-      if (mounted) {
+    _socketService.connect(
+      userId: widget.userId,
+      onIncomingCall: (data) {
+        _showIncomingCallDialog(data['from'], data['rideId']);
+      },
+      onRideAccepted: (data) {
+        if (mounted) {
+          setState(() {
+            currentStatus = "ACCEPTED";
+            remoteId = data['driverId'];
+            activeRideId = data['rideId'];
+            rideOtp = data['otp']?.toString();
+            rideFare = data['fare']?.toDouble();
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("RangraGo: Driver linked! Share OTP to start."),
+              backgroundColor: Color(0xFF06B6D4),
+            ),
+          );
+        }
+      },
+      onRideStarted: (data) {
+        if (mounted) setState(() => currentStatus = "STARTED");
+      },
+      onRideCompleted: (data) {
+        if (mounted) {
+          setState(() {
+            currentStatus = "COMPLETED";
+            rideFare = data['fare']?.toDouble();
+          });
+        }
+      },
+      onRideCancelled: (data) {
+        if (mounted) {
+          setState(() {
+            currentStatus = null;
+            activeRideId = null;
+            remoteId = null;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Ride Cancelled by peer.")));
+        }
+      },
+      onNewRide: widget.isDriver ? (data) {
+        if (mounted && isOnline) {
+          _fetchPendingRides();
+        }
+      } : null,
+    );
+
+    _socketService.socket!.on("driver-location-update", (data) => {
+      if (mounted && !widget.isDriver) {
+        final lat = data['lat'] as double;
+        final lng = data['lng'] as double;
         setState(() {
-          currentStatus = data['status'];
-          remoteId = data['driverId'];
-          activeRideId = data['rideId'];
-          rideOtp = data['otp']?.toString();
-          rideFare = data['fare']?.toDouble();
-          if (data['pickupCoords'] != null) {
-            pickupLoc = LatLng(data['pickupCoords']['lat'], data['pickupCoords']['lng']);
+          driverPos = LatLng(lat, lng);
+          if (pickupLoc != null) {
+            final dist = const Distance().as(LengthUnit.Meter, driverPos!, pickupLoc!);
+            driverDistance = (dist < 1000) ? "${dist}m" : "${(dist / 1000).toStringAsFixed(1)}km";
           }
-          if (data['dropCoords'] != null) {
-            dropLoc = LatLng(data['dropCoords']['lat'], data['dropCoords']['lng']);
-          }
         });
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("RangraGo: Driver linked! Share OTP to start."),
-            backgroundColor: Color(0xFF06B6D4),
-          ),
-        );
-      }
-    });
-
-    _socketService.socket.on('ride-started', (data) {
-      if (mounted) setState(() => currentStatus = "STARTED");
-    });
-
-    _socketService.socket.on('ride-completed', (data) {
-      if (mounted) {
-        setState(() {
-          currentStatus = "COMPLETED";
-          rideFare = data['fare']?.toDouble();
-        });
-      }
-    });
-
-    _socketService.socket.on('ride-cancelled', (data) {
-      if (mounted) {
-        setState(() {
-          currentStatus = null;
-          activeRideId = null;
-          remoteId = null;
-        });
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Ride Cancelled by peer.")));
       }
     });
 
     if (widget.isDriver) {
-      _socketService.socket.on('new-ride', (data) {
-        if (mounted && isOnline) {
-          _fetchPendingRides();
-        }
-      });
-
       _socketService.socket.on('ride-taken', (data) {
         if (mounted) {
           setState(() {
@@ -126,10 +169,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _toggleOnline(bool value) {
     setState(() => isOnline = value);
-    _socketService.socket.emit('update-status', {
-      'userId': widget.userId,
-      'isOnline': value,
-    });
+    _socketService.updateStatus(widget.userId, value);
     if (value) _fetchPendingRides();
   }
 
@@ -150,7 +190,14 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  Future<void> _handleBookRide(String pickup, String drop, String vehicleType) async {
+  Future<void> _handleBookRide(
+    String pickup, 
+    String drop, 
+    LatLng pickupPos, 
+    LatLng dropPos, 
+    String vehicleType, 
+    double distanceKm
+  ) async {
     setState(() => isLoading = true);
     try {
       final response = await http.post(
@@ -162,8 +209,11 @@ class _HomeScreenState extends State<HomeScreen> {
         body: jsonEncode({
           "userId": widget.userId,
           "pickup": pickup,
+          "pickupCoords": {"lat": pickupPos.latitude, "lng": pickupPos.longitude},
           "drop": drop,
+          "dropCoords": {"lat": dropPos.latitude, "lng": dropPos.longitude},
           "vehicleType": vehicleType,
+          "distanceKm": distanceKm,
         }),
       );
 
@@ -211,18 +261,20 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void _logout() {
+  void _logout() async {
     _socketService.disconnect();
-    Navigator.of(context).pushAndRemoveUntil(
-      MaterialPageRoute(builder: (context) => LoginScreen(onLoginSuccess: (data, isDriver) {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen(
-          userId: data['user']['_id'],
-          isDriver: isDriver,
-          userData: data['user'],
-        )));
-      })),
-      (route) => false,
-    );
+    // Clear both SharedPreferences and LocalStorage for maximum safety
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    html.window.localStorage.clear();
+    if (mounted) {
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (context) => LoginScreen(onLoginSuccess: (data, isDriver) {
+          // Re-use logic or just reload app
+        })),
+        (route) => false,
+      );
+    }
   }
 
   void _showOtpDialog() {
@@ -310,6 +362,7 @@ class _HomeScreenState extends State<HomeScreen> {
             style: ElevatedButton.styleFrom(backgroundColor: Colors.greenAccent),
             onPressed: () {
               Navigator.pop(context);
+              _socketService.socket!.emit("accept-call", {"to": from, "rideId": rideId});
               Navigator.push(context, MaterialPageRoute(builder: (context) => CallScreen(
                 channelId: rideId,
                 socketService: _socketService,
@@ -387,7 +440,17 @@ class _HomeScreenState extends State<HomeScreen> {
             }),
             _drawerTile(Icons.person_outline, "PROFILE SETTINGS", () {
               Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (context) => ProfileScreen(userData: widget.userData)));
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => ProfileScreen(
+                  userData: widget.userData,
+                  onUpdate: (newData) {
+                    setState(() {
+                      widget.userData.clear();
+                      widget.userData.addAll(newData);
+                    });
+                  },
+                ),
+              ));
             }),
             const Spacer(),
             _drawerTile(Icons.logout, "EXIT SYSTEM", _logout, color: Colors.redAccent),
@@ -484,9 +547,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   initialZoom: 13.0,
                 ),
                 children: [
+                  // GOOGLE MAPS TILES (No API Key Required)
                   TileLayer(
-                    urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                    userAgentPackageName: 'com.rangrago.app',
+                    urlTemplate: "https://mt0.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}",
+                    userAgentPackageName: "com.rangra.go",
                   ),
                   if (pickupLoc != null && dropLoc != null)
                     PolylineLayer(
@@ -514,6 +578,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           height: 40,
                           child: const Icon(Icons.flag, color: Colors.red, size: 40),
                         ),
+                      if (driverPos != null)
+                        Marker(
+                          point: driverPos!, 
+                          child: const Icon(Icons.directions_car, color: Color(0xFF06B6D4), size: 35)
+                        ),
                     ],
                   ),
                 ],
@@ -523,21 +592,42 @@ class _HomeScreenState extends State<HomeScreen> {
                 top: 20,
                 left: 20,
                 right: 20,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF070712).withOpacity(0.9),
-                    borderRadius: BorderRadius.circular(30),
-                    border: Border.all(color: theme.withOpacity(0.5)),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.radar, color: theme, size: 16),
-                      const SizedBox(width: 10),
-                      Text(message.toUpperCase(), style: TextStyle(color: theme, fontWeight: FontWeight.bold, fontSize: 10, letterSpacing: 1.5)),
-                    ],
-                  ),
+                child: Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF070712).withOpacity(0.9),
+                        borderRadius: BorderRadius.circular(30),
+                        border: Border.all(color: theme.withOpacity(0.5)),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.radar, color: theme, size: 16),
+                          const SizedBox(width: 10),
+                          Text(message.toUpperCase(), style: TextStyle(color: theme, fontWeight: FontWeight.bold, fontSize: 10, letterSpacing: 1.5)),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    if (currentStatus == "ACCEPTED" && driverPos != null)
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                        decoration: BoxDecoration(color: const Color(0xFF1E293B), borderRadius: BorderRadius.circular(20), border: Border.all(color: const Color(0xFF7C3AED).withOpacity(0.3))),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(Icons.directions_car, color: Color(0xFF06B6D4), size: 16),
+                            const SizedBox(width: 8),
+                            Text(
+                              driverDistance != null ? "DRIVER IS $driverDistance AWAY" : "DRIVER IS ON THE WAY", 
+                              style: const TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1)
+                            ),
+                          ],
+                        ),
+                      ),
+                  ],
                 ),
               ),
             ],

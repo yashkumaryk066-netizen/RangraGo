@@ -49,7 +49,7 @@ class AuthService {
     return null;
   }
 
-  Future<bool> updateProfile(Map<String, dynamic> updates) async {
+  Future<Map<String, dynamic>?> updateProfile(Map<String, dynamic> updates) async {
     final response = await http.put(
       Uri.parse("${AppConfig.authUrl}/profile"),
       headers: {
@@ -58,7 +58,11 @@ class AuthService {
       },
       body: jsonEncode(updates),
     );
-    return response.statusCode == 200;
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return data['user'];
+    }
+    return null;
   }
 }
 

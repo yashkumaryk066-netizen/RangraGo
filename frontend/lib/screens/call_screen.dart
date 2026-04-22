@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import '../services/agora_service.dart';
 import '../services/socket_service.dart';
+import '../services/config.dart';
 
 class CallScreen extends StatefulWidget {
   final String channelId;
@@ -32,11 +35,40 @@ class _CallScreenState extends State<CallScreen> {
 
   Future<void> _initCall() async {
     try {
+      // 1. Fetch Token from Backend
+      final response = await http.post(
+        Uri.parse("${AppConfig.authUrl}/agora-token"),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer ${AppConfig.userToken}"
+        },
+        body: jsonEncode({"channelName": widget.channelId}),
+      );
+
+      String token = "";
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        token = data['token'];
+      }
+
+      // 2. Initialize Agora
       await _agoraService.initAgora();
-      await _agoraService.joinChannel(widget.channelId, "");
+      
+      // 3. Join Channel
+      await _agoraService.joinChannel(widget.channelId, token);
+      
       if (mounted) setState(() => _localUserJoined = true);
     } catch (e) {
       print("Call init error: $e");
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Microphone block ho gaya hai! Chrome Flags check karein. Error: $e"),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 10),
+          ),
+        );
+      }
     }
   }
 
