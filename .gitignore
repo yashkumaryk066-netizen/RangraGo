@@ -1,6 +1,8 @@
 # Dependencies
 node_modules/
 .env
+mongodb_data/
+backend/mongodb_data/
 
 # Build
 build/
