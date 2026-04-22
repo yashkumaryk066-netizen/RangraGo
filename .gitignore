@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+.env
+
+# Build
+build/
+.dart_tool/
+.packages
+.pub-cache/
+.pub/
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db

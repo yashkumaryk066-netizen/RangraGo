@@ -24,7 +24,10 @@ app.use((req, res, next) => {
 
 // Routes
 
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", (req, res, next) => {
+  req.io = io;
+  next();
+}, authRoutes);
 app.use("/api/stats", statsRoutes);
 app.use("/api/rides", (req, res, next) => {
   req.io = io;

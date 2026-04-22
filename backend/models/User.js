@@ -43,11 +43,25 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  aadhaarNumber: {
+    type: String,
+    default: "",
+  },
+  licenseNumber: {
+    type: String,
+    default: "",
+  },
+  location: {
+    type: { type: String, default: "Point" },
+    coordinates: { type: [Number], default: [0, 0] }, // [lng, lat]
+  },
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
+
+userSchema.index({ location: "2dsphere" });
 
 module.exports = mongoose.model("User", userSchema);
 

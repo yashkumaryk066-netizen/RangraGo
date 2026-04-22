@@ -13,14 +13,26 @@ const rideSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  pickupCoords: {
+    lat: { type: Number, required: true },
+    lng: { type: Number, required: true },
+  },
   drop: {
     type: String,
     required: true,
+  },
+  dropCoords: {
+    lat: { type: Number, required: true },
+    lng: { type: Number, required: true },
   },
   status: {
     type: String,
     enum: ["REQUESTED", "ACCEPTED", "STARTED", "COMPLETED", "CANCELLED"],
     default: "REQUESTED",
+  },
+  vehicleType: {
+    type: String,
+    default: "BIKE",
   },
   fare: {
     type: Number,

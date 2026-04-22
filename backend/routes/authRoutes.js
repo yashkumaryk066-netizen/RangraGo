@@ -4,6 +4,8 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const verifyToken = require("../middleware/auth");
 
+const { generateToken } = require("../config/agora");
+
 // Login/Register combined logic
 router.post("/login", async (req, res) => {
   try {
@@ -38,6 +40,18 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// Get Agora Token
+router.post("/agora-token", verifyToken, async (req, res) => {
+  try {
+    const { channelName } = req.body;
+    const uid = 0; // UID 0 allows any user
+    const token = generateToken(channelName, uid);
+    res.json({ token });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // Get Profile
 router.get("/profile", verifyToken, async (req, res) => {
   try {
@@ -57,6 +71,40 @@ router.put("/profile", verifyToken, async (req, res) => {
     res.json({ message: "Profile updated", user });
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+});
+
+// Update Location (Driver)
+router.put("/location", verifyToken, async (req, res) => {
+  try {
+    const { lat, lng } = req.body;
+    const driverId = req.user.userId;
+
+    await User.findByIdAndUpdate(driverId, {
+      location: {
+        type: "Point",
+        coordinates: [lng, lat]
+      }
+    });
+
+    // Broadcast to active ride's rider
+    const Ride = require("../models/Ride");
+    const activeRide = await Ride.findOne({ 
+      driver: driverId, 
+      status: { $in: ["ACCEPTED", "STARTED"] } 
+    });
+
+    if (activeRide && req.io) {
+      req.io.to(activeRide.rider.toString()).emit("driver-location-update", {
+        lat,
+        lng,
+        rideId: activeRide._id
+      });
+    }
+
+    res.json({ message: "Location updated" });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 });
 

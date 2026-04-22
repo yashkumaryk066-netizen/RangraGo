@@ -1,20 +1,53 @@
 const express = require("express");
 const router = express.Router();
 const Ride = require("../models/Ride");
+const User = require("../models/User");
 const verifyToken = require("../middleware/auth");
 
 // Create Ride (Passenger)
 router.post("/", verifyToken, async (req, res) => {
   try {
-    const fare = Math.floor(100 + Math.random() * 400);
+    const { vehicleType, distanceKm, pickupCoords } = req.body;
+    
+    // 1. Calculate Fare
+    let baseFare = 20;
+    let ratePerKm = 5;
+    switch (vehicleType) {
+      case "Auto": baseFare = 30; ratePerKm = 10; break;
+      case "Car": baseFare = 50; ratePerKm = 15; break;
+      case "Prime": baseFare = 80; ratePerKm = 25; break;
+      default: baseFare = 20; ratePerKm = 5;
+    }
+    const distance = parseFloat(distanceKm) || 0;
+    const fare = Math.round(baseFare + (distance * ratePerKm));
+
+    // 2. Save Ride to DB
     const ride = await Ride.create({
       ...req.body,
       userId: req.user.userId,
       fare
     });
     
-    // Notify all online drivers
-    req.io.to("online-drivers").emit("new-ride", ride);
+    // 3. GEO-FILTERING: Find nearby online drivers (within 5km)
+    // pickupCoords = { lat, lng }
+    const nearbyDrivers = await User.find({
+      role: "DRIVER",
+      isOnline: true,
+      location: {
+        $near: {
+          $geometry: {
+            type: "Point",
+            coordinates: [pickupCoords.lng, pickupCoords.lat] // [lng, lat]
+          },
+          $maxDistance: 5000 // 5 Kilometers
+        }
+      }
+    });
+
+    // 4. Notify ONLY those nearby drivers
+    nearbyDrivers.forEach(driver => {
+      req.io.to(driver._id.toString()).emit("new-ride", ride);
+    });
     
     res.status(201).json(ride);
   } catch (error) {
