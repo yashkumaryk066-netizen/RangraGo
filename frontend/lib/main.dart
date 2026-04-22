@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/foundation.dart';
 import 'screens/login_screen.dart';
+import 'screens/splash_screen.dart';
 import 'screens/home_screen.dart';
 import 'screens/driver_registration_screen.dart';
 import 'screens/rider_registration_screen.dart';
@@ -16,7 +17,7 @@ void main() {
 }
 
 class UpdateChecker {
-  static const int currentBuild = 1;
+  static const int currentBuild = 2;
 
   static Future<void> check(BuildContext context) async {
     if (kIsWeb) return;
@@ -74,6 +75,8 @@ class RangraGoApp extends StatefulWidget {
 }
 
 class _RangraGoAppState extends State<RangraGoApp> {
+  bool _isSplashFinished = false;
+
   @override
   void initState() {
     super.initState();
@@ -124,7 +127,9 @@ class _RangraGoAppState extends State<RangraGoApp> {
           brightness: Brightness.dark,
         ),
       ),
-      home: FutureBuilder<Map<String, dynamic>?>(
+      home: !_isSplashFinished 
+        ? SplashScreen(onFinish: () => setState(() => _isSplashFinished = true))
+        : FutureBuilder<Map<String, dynamic>?>(
         future: _loadSession(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
