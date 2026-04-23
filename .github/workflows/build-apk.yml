@@ -8,8 +8,23 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  # JOB 1: Pehle hi purani release delete karo — build se pehle
+  delete-old-release:
     runs-on: ubuntu-latest
+    steps:
+      - name: Delete Old Release Immediately
+        run: |
+          gh release delete latest --yes || true
+          git clone https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git temp-repo
+          cd temp-repo && git push --delete origin latest || true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # JOB 2: Naya APK banao aur upload karo
+  build-and-release:
+    runs-on: ubuntu-latest
+    needs: delete-old-release
     steps:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
@@ -17,19 +32,12 @@ jobs:
           channel: 'stable'
       - run: cd frontend && flutter pub get
       - run: cd frontend && flutter build apk --release
+
       - name: Rename APK
         run: mv frontend/build/app/outputs/flutter-apk/app-release.apk frontend/build/app/outputs/flutter-apk/RangraGo.apk
-      
-      - name: Cleanup Old Release
-        run: |
-          gh release delete latest --yes || true
-          git push --delete origin latest || true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Create Release
+      - name: Upload New Release
         uses: softprops/action-gh-release@v2
-        if: github.ref == 'refs/heads/master'
         with:
           tag_name: latest
           name: "RangraGo v1.0.1 (Latest)"
@@ -39,13 +47,3 @@ jobs:
           make_latest: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Get SHA-1 Fingerprint
-        run: |
-          KEYSTORE_PATH=$(find ~ -name "debug.keystore" | head -n 1)
-          if [ -z "$KEYSTORE_PATH" ]; then
-            KEYSTORE_PATH=$(find . -name "debug.keystore" | head -n 1)
-          fi
-          echo "Using keystore at: $KEYSTORE_PATH"
-          keytool -list -v -keystore "$KEYSTORE_PATH" -alias androiddebugkey -storepass android -keypass android | grep SHA1
-        continue-on-error: true
