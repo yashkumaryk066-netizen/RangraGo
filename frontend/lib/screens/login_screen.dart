@@ -144,22 +144,66 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                           ),
-                      const SizedBox(height: 15),
-
-                      if (kIsWeb)
-                        OutlinedButton.icon(
-                          onPressed: () {
-                            launchUrl(Uri.parse("https://github.com/yashkumaryk066-netizen/RangraGo/releases/latest/download/RangraGo.apk"), mode: LaunchMode.externalApplication);
-                          },
-                          icon: const Icon(Icons.android, color: Colors.greenAccent, size: 18),
-                          label: const Text("DOWNLOAD ANDROID APP", style: TextStyle(color: Colors.white70, fontSize: 10, letterSpacing: 1.5)),
-                          style: OutlinedButton.styleFrom(
-                            side: BorderSide(color: Colors.greenAccent.withOpacity(0.3)),
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-                          ),
-                        ),
                     ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                // ─── PREMIUM DOWNLOAD SECTION ───
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 32),
+                  child: GestureDetector(
+                    onTap: () {
+                      // Always fetch fresh from GitHub latest release
+                      final url = "https://github.com/yashkumaryk066-netizen/RangraGo/releases/latest/download/RangraGo.apk";
+                      launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [Colors.green.shade800, Colors.green.shade600],
+                        ),
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.greenAccent.withOpacity(0.25),
+                            blurRadius: 20,
+                            offset: const Offset(0, 6),
+                          )
+                        ],
+                      ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.android, color: Colors.white, size: 28),
+                          SizedBox(width: 12),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "DOWNLOAD RANGRAGO",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 14,
+                                  letterSpacing: 1.5,
+                                ),
+                              ),
+                              Text(
+                                "Latest Version • Android APK",
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 11,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Spacer(),
+                          Icon(Icons.download_rounded, color: Colors.white, size: 24),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
                 const Spacer(),
