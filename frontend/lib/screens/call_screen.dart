@@ -9,12 +9,14 @@ class CallScreen extends StatefulWidget {
   final String channelId;
   final SocketService socketService;
   final String remoteUserId;
+  final String callerName;
 
   const CallScreen({
     super.key,
     required this.channelId,
     required this.socketService,
     required this.remoteUserId,
+    this.callerName = "User",
   });
 
   @override
@@ -111,9 +113,7 @@ class _CallScreenState extends State<CallScreen> {
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  widget.remoteUserId.length > 10
-                      ? widget.remoteUserId.substring(0, 10) + '...'
-                      : widget.remoteUserId,
+                  widget.callerName,
                   style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),
@@ -153,7 +153,10 @@ class _CallScreenState extends State<CallScreen> {
                 _callBtn(
                   icon: _isSpeakerOn ? Icons.volume_up : Icons.volume_off,
                   color: _isSpeakerOn ? Colors.greenAccent.withOpacity(0.3) : Colors.white24,
-                  onTap: () => setState(() => _isSpeakerOn = !_isSpeakerOn),
+                  onTap: () async {
+                    setState(() => _isSpeakerOn = !_isSpeakerOn);
+                    await _agoraService.engine.setEnableSpeakerphone(_isSpeakerOn);
+                  },
                 ),
               ],
             ),

@@ -42,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String? currentStatus; 
   String? activeRideId;
   String? remoteId;
+  String? remoteUserName;
   String? rideOtp;
   double? rideFare;
   LatLng? pickupLoc = const LatLng(28.6139, 77.2090); // Default: Delhi
@@ -102,14 +103,15 @@ class _HomeScreenState extends State<HomeScreen> {
           setState(() {
             currentStatus = "ACCEPTED";
             remoteId = data['driverId'];
+            remoteUserName = data['driverName'] ?? 'Driver';
             activeRideId = data['rideId'];
             rideOtp = data['otp']?.toString();
             rideFare = data['fare']?.toDouble();
           });
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text("RangraGo: Driver linked! Share OTP to start."),
-              backgroundColor: Color(0xFF06B6D4),
+            SnackBar(
+              content: Text("🚗 ${data['driverName'] ?? 'Driver'} is on the way! Show OTP to start."),
+              backgroundColor: const Color(0xFF06B6D4),
             ),
           );
         }
@@ -366,6 +368,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 channelId: rideId,
                 socketService: _socketService,
                 remoteUserId: from,
+                callerName: callerName,
               )));
             },
             child: const Text("ACCEPT", style: TextStyle(color: Colors.black)),
@@ -711,6 +714,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         channelId: activeRideId!,
                         socketService: _socketService,
                         remoteUserId: remoteId!,
+                        callerName: remoteUserName ?? 'User',
                       )));
                     }
                   },

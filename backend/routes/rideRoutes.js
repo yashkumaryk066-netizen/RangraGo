@@ -70,12 +70,30 @@ router.post("/:id/accept", verifyToken, async (req, res) => {
     if (customFare) ride.fare = customFare;
     await ride.save();
     
+    // Fetch full driver info to send to rider
+    const driver = await User.findById(req.user.userId);
+    // Fetch full rider info to send to driver
+    const rider = await User.findById(ride.userId);
+    
+    // Notify RIDER with driver's full details
     req.io.to(ride.userId).emit("ride-accepted", {
       rideId: ride._id,
       driverId: req.user.userId,
+      driverName: driver?.name || "Driver",
+      driverPhone: driver?.phone || "",
+      driverVehicle: driver?.vehicleInfo || {},
       status: "ACCEPTED",
       otp: ride.otp,
       fare: ride.fare
+    });
+
+    // Notify DRIVER with rider's details  
+    req.io.to(req.user.userId).emit("rider-info", {
+      rideId: ride._id,
+      riderName: rider?.name || "Rider",
+      riderPhone: rider?.phone || "",
+      pickup: ride.pickup,
+      drop: ride.drop
     });
 
     // Notify ALL other drivers to remove this ride from their list
