@@ -19,7 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
 
   final GoogleSignIn _googleSignIn = GoogleSignIn(
-    clientId: AppConfig.googleClientId,
+    clientId: kIsWeb ? AppConfig.googleClientId : null,
     scopes: ["email", "profile"],
   );
 

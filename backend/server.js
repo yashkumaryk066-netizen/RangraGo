@@ -62,9 +62,9 @@ io.on("connection", (socket) => {
   });
 
   // Call user signaling
-  socket.on("call-user", ({ to, from, rideId }) => {
-    console.log(`Call request from ${from} to ${to} for ride ${rideId}`);
-    io.to(to).emit("incoming-call", { from, rideId });
+  socket.on("call-user", ({ to, from, callerName, rideId }) => {
+    console.log(`Call request from ${callerName} (${from}) to ${to} for ride ${rideId}`);
+    io.to(to).emit("incoming-call", { from, callerName, rideId });
   });
 
   // Accept call signaling
