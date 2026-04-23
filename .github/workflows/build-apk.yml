@@ -18,12 +18,19 @@ jobs:
       - run: cd frontend && flutter pub get
       - run: cd frontend && flutter build apk --release
       
+      - name: Cleanup Old Release
+        run: |
+          gh release delete latest --yes || true
+          git push --delete origin latest || true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create Release
         uses: softprops/action-gh-release@v2
         if: github.ref == 'refs/heads/master'
         with:
           tag_name: latest
-          name: Latest Release
+          name: "RangraGo v1.0.1 (Latest)"
           files: frontend/build/app/outputs/flutter-apk/app-release.apk
           draft: false
           prerelease: false
