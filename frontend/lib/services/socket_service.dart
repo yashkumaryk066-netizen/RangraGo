@@ -43,8 +43,8 @@ class SocketService {
     socket.emit('update-status', {'userId': userId, 'isOnline': isOnline});
   }
 
-  void callUser(String to, String from, String rideId) {
-    socket.emit('call-user', {'to': to, 'from': from, 'rideId': rideId});
+  void callUser(String to, String from, String callerName, String rideId) {
+    socket.emit('call-user', {'to': to, 'from': from, 'callerName': callerName, 'rideId': rideId});
   }
 
   void acceptCall(String to, String rideId) {

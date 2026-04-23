@@ -95,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _socketService.connect(
       userId: widget.userId,
       onIncomingCall: (data) {
-        _showIncomingCallDialog(data['from'], data['rideId']);
+        _showIncomingCallDialog(data['from'], data['callerName'] ?? 'Unknown User', data['rideId']);
       },
       onRideAccepted: (data) {
         if (mounted) {
@@ -340,7 +340,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  void _showIncomingCallDialog(String from, String rideId) {
+  void _showIncomingCallDialog(String from, String callerName, String rideId) {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -348,7 +348,7 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: const Color(0xFF070712),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: const Text("INCOMING CALL", style: TextStyle(color: Colors.greenAccent, letterSpacing: 2)),
-        content: Text("Call from $from", style: const TextStyle(color: Colors.white70)),
+        content: Text("Call from $callerName", style: const TextStyle(color: Colors.white70)),
         actions: [
           TextButton(
             onPressed: () {
@@ -706,7 +706,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 GestureDetector(
                   onTap: () {
                     if (remoteId != null) {
-                      _socketService.callUser(remoteId!, widget.userId, activeRideId!);
+                      _socketService.callUser(remoteId!, widget.userId, widget.userData['name'] ?? 'User', activeRideId!);
                       Navigator.push(context, MaterialPageRoute(builder: (context) => CallScreen(
                         channelId: activeRideId!,
                         socketService: _socketService,

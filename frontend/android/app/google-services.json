@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "40872959188",
+    "project_id": "splitbalance-b552b",
+    "storage_bucket": "splitbalance-b552b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:40872959188:android:98165e45b4c333bbc5ef41",
+        "android_client_info": {
+          "package_name": "com.example.rangra_go"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "40872959188-ebp87clins78jd6mbrcrljmco9r5psqe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDssdwZTTcm1PcS2GGf1PyknKKXvPYoaTg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "40872959188-ebp87clins78jd6mbrcrljmco9r5psqe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
