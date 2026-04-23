@@ -451,7 +451,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ));
             }),
             _drawerTile(Icons.android, "DOWNLOAD ANDROID APP", () {
-              launchUrl(Uri.parse("https://github.com/yashkumaryk066-netizen/RangraGo/releases/latest/download/app-release.apk"), mode: LaunchMode.externalApplication);
+              launchUrl(Uri.parse("https://github.com/yashkumaryk066-netizen/RangraGo/releases/latest/download/RangraGo.apk"), mode: LaunchMode.externalApplication);
             }, color: Colors.greenAccent),
             const Spacer(),
             _drawerTile(Icons.logout, "EXIT SYSTEM", _logout, color: Colors.redAccent),

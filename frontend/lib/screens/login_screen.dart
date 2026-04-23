@@ -149,7 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       if (kIsWeb)
                         OutlinedButton.icon(
                           onPressed: () {
-                            launchUrl(Uri.parse("https://github.com/yashkumaryk066-netizen/RangraGo/releases/latest/download/app-release.apk"), mode: LaunchMode.externalApplication);
+                            launchUrl(Uri.parse("https://github.com/yashkumaryk066-netizen/RangraGo/releases/latest/download/RangraGo.apk"), mode: LaunchMode.externalApplication);
                           },
                           icon: const Icon(Icons.android, color: Colors.greenAccent, size: 18),
                           label: const Text("DOWNLOAD ANDROID APP", style: TextStyle(color: Colors.white70, fontSize: 10, letterSpacing: 1.5)),

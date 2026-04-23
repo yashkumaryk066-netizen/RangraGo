@@ -17,6 +17,8 @@ jobs:
           channel: 'stable'
       - run: cd frontend && flutter pub get
       - run: cd frontend && flutter build apk --release
+      - name: Rename APK
+        run: mv frontend/build/app/outputs/flutter-apk/app-release.apk frontend/build/app/outputs/flutter-apk/RangraGo.apk
       
       - name: Cleanup Old Release
         run: |
@@ -31,7 +33,7 @@ jobs:
         with:
           tag_name: latest
           name: "RangraGo v1.0.1 (Latest)"
-          files: frontend/build/app/outputs/flutter-apk/app-release.apk
+          files: frontend/build/app/outputs/flutter-apk/RangraGo.apk
           draft: false
           prerelease: false
           make_latest: true
