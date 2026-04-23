@@ -17,7 +17,7 @@ void main() {
 }
 
 class UpdateChecker {
-  static const int currentBuild = 2;
+  static const int currentBuild = 3;
 
   static Future<void> check(BuildContext context) async {
     if (kIsWeb) return;

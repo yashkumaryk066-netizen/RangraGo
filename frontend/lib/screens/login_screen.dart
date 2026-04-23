@@ -35,13 +35,19 @@ class _LoginScreenState extends State<LoginScreen> {
           role: _isDriver ? "DRIVER" : "RIDER",
           googleId: account.id,
         );
-        if (result != null && mounted) widget.onLoginSuccess(result, _isDriver);
+        if (result != null && mounted) {
+          widget.onLoginSuccess(result, _isDriver);
+        } else if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Backend Connection Error. Check your internet.")),
+          );
+        }
       }
     } catch (e) {
       print("Google SignIn Error: $e");
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Google Sign-In failed. Please try again.")),
+          SnackBar(content: Text("Google Sign-In failed: $e")),
         );
       }
     }
