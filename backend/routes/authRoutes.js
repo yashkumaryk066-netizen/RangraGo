@@ -21,7 +21,13 @@ router.post("/login", async (req, res) => {
         role,
         isRegistered: true
       });
-      console.log(`New user registered: ${email}`);
+      console.log(`New user registered: ${email} as ${role}`);
+    } else {
+      // Update role and googleId to ensure consistency
+      user.role = role || user.role;
+      if (googleId) user.googleId = googleId;
+      await user.save();
+      console.log(`User logged in: ${email} with role ${user.role}`);
     }
 
     const token = jwt.sign(

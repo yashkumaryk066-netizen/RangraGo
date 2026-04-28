@@ -21,13 +21,19 @@ RangraGo is a premium, cost-optimized ride-hailing application designed for full
 - **Maps**: OpenStreetMap (Nominatim Geocoding)
 
 ## 🚀 Getting Started
-1. **Automation**: Run `./deploy.sh` to install dependencies and build the application.
-2. **Backend**: 
+1. **Full Deployment**: Run `./deploy.sh` to install dependencies and build the web version.
+2. **Local APK Build (Experimental)**: 
+   - If tools (Java/Android SDK) are missing, run: `chmod +x setup_env.sh && ./setup_env.sh`
+   - To build the APK, run: `chmod +x build_apk_locally.sh && ./build_apk_locally.sh`
+   - The APK will be available in the root as `RangraGo_Local.apk`.
+
+3. **Backend**: 
    - `cd backend`
    - `npm install`
    - Configure `.env` with your Mongo URI and Agora credentials.
    - `npm start`
-3. **Frontend**:
+
+4. **Frontend**:
    - `cd frontend`
    - `flutter pub get`
    - `flutter run`

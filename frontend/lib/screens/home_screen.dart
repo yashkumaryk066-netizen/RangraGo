@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -454,9 +455,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ));
             }),
-            _drawerTile(Icons.android, "DOWNLOAD ANDROID APP", () {
-              launchUrl(Uri.parse("https://github.com/yashkumaryk066-netizen/RangraGo/releases/latest/download/RangraGo.apk"), mode: LaunchMode.externalApplication);
-            }, color: Colors.greenAccent),
+            if (kIsWeb)
+              _drawerTile(Icons.android, "DOWNLOAD ANDROID APP", () {
+                launchUrl(Uri.parse("https://github.com/yashkumaryk066-netizen/RangraGo/releases/latest/download/RangraGo.apk"), mode: LaunchMode.externalApplication);
+              }, color: Colors.greenAccent),
             const Spacer(),
             _drawerTile(Icons.logout, "EXIT SYSTEM", _logout, color: Colors.redAccent),
             const SizedBox(height: 20),

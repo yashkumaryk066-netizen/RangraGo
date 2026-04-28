@@ -3,6 +3,17 @@ const router = express.Router();
 const User = require("../models/User");
 const Ride = require("../models/Ride");
 const verifyToken = require("../middleware/auth");
+const mongoose = require("mongoose");
+
+// Health check
+router.get("/health", async (req, res) => {
+  const dbStatus = mongoose.connection.readyState === 1 ? "Connected" : "Disconnected";
+  res.json({
+    status: "OK",
+    database: dbStatus,
+    timestamp: new Date()
+  });
+});
 
 // Get rider stats
 router.get("/stats", verifyToken, async (req, res) => {

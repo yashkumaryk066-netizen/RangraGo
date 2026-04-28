@@ -33,6 +33,11 @@ jobs:
       - run: cd frontend && flutter pub get
       - run: cd frontend && flutter build apk --release
 
+      - name: Get SHA-1 Fingerprint
+        run: |
+          echo "Generating SHA-1 for Debug Key (Default for GitHub Actions)"
+          keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android | grep SHA1
+
       - name: Rename APK
         run: mv frontend/build/app/outputs/flutter-apk/app-release.apk frontend/build/app/outputs/flutter-apk/RangraGo.apk
 

@@ -24,15 +24,16 @@ class AuthService {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
         AppConfig.userToken = data['token'];
-        print("Login Success: Token Received");
+        print("✅ Login Success: Token Received");
         return data;
       } else {
-        print("Auth Error (${response.statusCode}): ${response.body}");
+        print("❌ Auth Error (${response.statusCode}): ${response.body}");
+        // Return a map with error info if needed, but for now null is fine
         return null;
       }
-
     } catch (e) {
-      print("Network Error: $e");
+      print("🚨 Network/Server Error: $e");
+      print("Check if backend is running at: ${AppConfig.authUrl}");
       return null;
     }
   }
