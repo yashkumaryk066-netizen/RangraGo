@@ -16,15 +16,11 @@ subprojects {
     project.layout.buildDirectory.value(newSubprojectBuildDir)
 }
 subprojects {
-    project.evaluationDependsOn(":app")
-}
-
-subprojects {
     afterEvaluate {
         if (project.hasProperty("android")) {
             val android = project.extensions.getByName("android") as com.android.build.gradle.BaseExtension
             if (android.namespace == null) {
-                android.namespace = "com.example.rangra_go.${project.name}"
+                android.namespace = "com.example.rangra_go.${project.name.replace("-", "_")}"
             }
         }
     }
