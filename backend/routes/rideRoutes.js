@@ -134,6 +134,16 @@ router.post("/:id/complete", verifyToken, async (req, res) => {
     ride.paymentStatus = "PAID";
     await ride.save();
 
+    // Update driver stats
+    if (ride.driverId) {
+      await User.findByIdAndUpdate(ride.driverId, {
+        $inc: { 
+          totalEarnings: ride.fare || 0,
+          completedRides: 1
+        }
+      });
+    }
+
     req.io.to(ride.userId).emit("ride-completed", { rideId: ride._id, fare: ride.fare });
     res.json(ride);
   } catch (error) {

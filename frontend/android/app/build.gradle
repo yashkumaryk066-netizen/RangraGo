@@ -1,12 +1,13 @@
 plugins {
-    id "com.android.application" version "8.6.0"
-    id "org.jetbrains.kotlin.android" version "1.9.22"
+    id "com.android.application"
+    id "org.jetbrains.kotlin.android"
     id "dev.flutter.flutter-gradle-plugin"
 }
 
 android {
     namespace "com.example.rangra_go"
-    compileSdk 34
+    compileSdk flutter.compileSdkVersion
+    ndkVersion flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -19,10 +20,10 @@ android {
 
     defaultConfig {
         applicationId "com.example.rangra_go"
-        minSdkVersion flutter.minSdkVersion
-        targetSdk 34
-        versionCode 3
-        versionName "1.1.0"
+        minSdk flutter.minSdkVersion
+        targetSdk flutter.targetSdkVersion
+        versionCode flutter.versionCode
+        versionName flutter.versionName
     }
 
     buildTypes {

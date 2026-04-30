@@ -55,6 +55,14 @@ const userSchema = new mongoose.Schema({
     type: { type: String, default: "Point" },
     coordinates: { type: [Number], default: [0, 0] }, // [lng, lat]
   },
+  totalEarnings: {
+    type: Number,
+    default: 0,
+  },
+  completedRides: {
+    type: Number,
+    default: 0,
+  },
   createdAt: {
     type: Date,
     default: Date.now,

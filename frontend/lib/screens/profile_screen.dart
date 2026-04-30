@@ -91,6 +91,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
               subtitle: Text(widget.userData['role'], style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             ),
+            if (widget.userData['role'] == "DRIVER") ...[
+              const SizedBox(height: 15),
+              Row(
+                children: [
+                  Expanded(
+                    child: _buildStatTile("TOTAL EARNINGS", "₹${widget.userData['totalEarnings'] ?? 0}", Colors.amber.withOpacity(0.1)),
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: _buildStatTile("RIDES DONE", "${widget.userData['completedRides'] ?? 0}", Colors.greenAccent.withOpacity(0.1)),
+                  ),
+                ],
+              ),
+            ],
             const SizedBox(height: 40),
             if (isEditing)
               ElevatedButton(
@@ -106,6 +120,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildStatTile(String label, String value, Color bgColor) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+      decoration: BoxDecoration(color: bgColor, borderRadius: BorderRadius.circular(15), border: Border.all(color: Colors.white10)),
+      child: Column(
+        children: [
+          Text(value, style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+          const SizedBox(height: 5),
+          Text(label, style: const TextStyle(color: Colors.white38, fontSize: 8, fontWeight: FontWeight.bold, letterSpacing: 1)),
+        ],
       ),
     );
   }
