@@ -1,6 +1,11 @@
 # RangraGo 🚀
 ### India's Next-Gen Ride Experience
 
+[![Build APK](https://github.com/yashkumaryk066-netizen/RangraGo/actions/workflows/build-apk.yml/badge.svg)](https://github.com/yashkumaryk066-netizen/RangraGo/actions/workflows/build-apk.yml)
+[![Latest Release](https://img.shields.io/github/v/release/yashkumaryk066-netizen/RangraGo?color=blue&label=Latest%20APK)](https://github.com/yashkumaryk066-netizen/RangraGo/releases/latest)
+
+[**📥 DOWNLOAD LATEST APK**](https://github.com/yashkumaryk066-netizen/RangraGo/releases/latest/download/RangraGo.apk)
+
 RangraGo is a premium, cost-optimized ride-hailing application designed for full reliability and scale. Built with a Cyber-Dark aesthetic, it offers a seamless experience for both Riders and Drivers.
 
 ## ✨ Key Features
