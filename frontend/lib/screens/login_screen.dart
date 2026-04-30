@@ -20,6 +20,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     clientId: kIsWeb ? AppConfig.googleClientId : null,
+    serverClientId: AppConfig.googleClientId, // Correct for both mobile and web
     scopes: ["email", "profile"],
   );
 
