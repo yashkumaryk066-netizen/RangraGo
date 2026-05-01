@@ -108,7 +108,9 @@ router.post("/:id/accept", verifyToken, async (req, res) => {
       riderName: rider?.name || "Rider",
       riderPhone: rider?.phone || "",
       pickup: ride.pickup,
-      drop: ride.drop
+      drop: ride.drop,
+      pickupCoords: ride.pickupCoords,
+      dropCoords: ride.dropCoords,
     });
 
     req.io.to("online-drivers").emit("ride-taken", { rideId: ride._id });

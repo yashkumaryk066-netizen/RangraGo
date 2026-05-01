@@ -142,8 +142,21 @@ class _HomeScreenState extends State<HomeScreen> {
             currentStatus = null;
             activeRideId = null;
             remoteId = null;
+            pickupLoc = null;
+            dropLoc = null;
           });
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Ride Cancelled by peer.")));
+        }
+      },
+      onRiderInfo: (data) {
+        if (mounted) {
+          setState(() {
+            currentStatus = "ACCEPTED";
+            activeRideId = data['rideId'];
+            remoteUserName = data['riderName'];
+            pickupLoc = LatLng(data['pickupCoords']['lat'], data['pickupCoords']['lng']);
+            dropLoc = LatLng(data['dropCoords']['lat'], data['dropCoords']['lng']);
+          });
         }
       },
       onNewRide: widget.isDriver ? (data) {

@@ -11,6 +11,7 @@ class SocketService {
     required Function(dynamic) onRideStarted,
     required Function(dynamic) onRideCompleted,
     required Function(dynamic) onRideCancelled,
+    Function(dynamic)? onRiderInfo, // For drivers to get rider details
     Function(dynamic)? onNewRide, // For drivers
   }) {
     socket = IO.io(AppConfig.socketUrl, <String, dynamic>{
@@ -30,6 +31,10 @@ class SocketService {
     socket.on('ride-started', (data) => onRideStarted(data));
     socket.on('ride-completed', (data) => onRideCompleted(data));
     socket.on('ride-cancelled', (data) => onRideCancelled(data));
+    
+    if (onRiderInfo != null) {
+      socket.on('rider-info', (data) => onRiderInfo(data));
+    }
     
     if (onNewRide != null) {
       socket.on('new-ride', (data) => onNewRide(data));
