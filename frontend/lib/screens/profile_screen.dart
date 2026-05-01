@@ -255,7 +255,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
           value: _selectedType,
-          enabled: enabled,
           dropdownColor: const Color(0xFF14142A),
           isExpanded: true,
           style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600),
@@ -265,11 +264,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Text(value),
             );
           }).toList(),
-          onChanged: (String? newValue) {
+          onChanged: enabled ? (String? newValue) {
             if (newValue != null) {
               setState(() => _selectedType = newValue);
             }
-          },
+          } : null,
         ),
       ),
     );
