@@ -89,13 +89,24 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   }
 
   Future<void> _handleGoogleSignIn() async {
+    // Prevent crash on unsupported platforms like Linux/Windows
+    if (!kIsWeb && (defaultTargetPlatform == TargetPlatform.linux || 
+        defaultTargetPlatform == TargetPlatform.windows)) {
+      _showError("Google Sign-In is not supported on Desktop. Please use the Android app or Web version.");
+      return;
+    }
+
     setState(() => _isLoading = true);
     try {
       final account = await _googleSignIn.signIn();
       if (account != null) await _processLogin(account);
     } catch (e) {
       print("Google SignIn Error: $e");
-      _showError("Google Sign-In failed: $e");
+      String errorMessage = e.toString();
+      if (errorMessage.contains("MissingPluginException")) {
+        errorMessage = "Google Sign-In not configured for this platform.";
+      }
+      _showError("Google Sign-In failed: $errorMessage");
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
