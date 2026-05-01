@@ -51,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
   LatLng? driverPos; // Live Driver Tracking
   String? driverDistance; // e.g. "1.5 km"
   List<LatLng> polylinePoints = [];
-  Timer? _locationTimer;
+  StreamSubscription<Position>? _positionStream;
 
   @override
   void initState() {
@@ -63,32 +63,40 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _startLocationUpdates() {
-    _locationTimer = Timer.periodic(const Duration(seconds: 30), (timer) async {
+    // High-frequency stream for "Live" movement like Uber
+    _positionStream = Geolocator.getPositionStream(
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 5, // Update every 5 meters
+      ),
+    ).listen((Position pos) async {
       if (isOnline) {
-        void _updateLocation() async {
-          final pos = await Geolocator.getCurrentPosition();
-          if (pos != null) {
-            // Local state update for distance checks
-            setState(() => driverPos = LatLng(pos.latitude, pos.longitude));
-            
-            await http.put(
-              Uri.parse("${AppConfig.authUrl}/location"),
-              headers: {
-                "Content-Type": "application/json",
-                "Authorization": "Bearer ${AppConfig.userToken}"
-              },
-              body: jsonEncode({"lat": pos.latitude, "lng": pos.longitude}),
-            );
-          }
-        }
-        _updateLocation();
+        final currentLatLng = LatLng(pos.latitude, pos.longitude);
+        setState(() => driverPos = currentLatLng);
+
+        // Update Backend & Socket for Rider's View
+        _socketService.socket?.emit("update-location", {
+          "lat": pos.latitude,
+          "lng": pos.longitude,
+          "activeRideId": activeRideId,
+        });
+
+        // Background update for persistent storage
+        http.put(
+          Uri.parse("${AppConfig.authUrl}/location"),
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer ${AppConfig.userToken}"
+          },
+          body: jsonEncode({"lat": pos.latitude, "lng": pos.longitude}),
+        );
       }
     });
   }
 
   @override
   void dispose() {
-    _locationTimer?.cancel();
+    _positionStream?.cancel();
     _socketService.disconnect();
     super.dispose();
   }
@@ -559,13 +567,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     urlTemplate: "https://mt0.google.com/vt/lyrs=m&hl=en&x={x}&y={y}&z={z}",
                     userAgentPackageName: "com.rangra.go",
                   ),
-                  if (pickupLoc != null && dropLoc != null)
+                  // Navigation Polyline (Uber-style)
+                  if (pickupLoc != null && (dropLoc != null || driverPos != null))
                     PolylineLayer(
                       polylines: [
                         Polyline(
-                          points: [pickupLoc!, dropLoc!],
-                          color: theme,
-                          strokeWidth: 4,
+                          points: (currentStatus == "ACCEPTED") 
+                              ? [driverPos ?? pickupLoc!, pickupLoc!] // Path to Pickup
+                              : (currentStatus == "STARTED" && dropLoc != null)
+                                  ? [driverPos ?? pickupLoc!, dropLoc!] // Path to Drop
+                                  : [],
+                          strokeWidth: 5,
+                          color: const Color(0xFF7C3AED),
                         ),
                       ],
                     ),

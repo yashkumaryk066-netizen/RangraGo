@@ -185,10 +185,29 @@ router.get("/history", verifyToken, async (req, res) => {
   }
 });
 
-// Get all active rides (for online drivers)
+// Get all active rides (filtered for online drivers by vehicle type)
 router.get("/active", verifyToken, async (req, res) => {
   try {
-    const rides = await Ride.find({ status: "REQUESTED" });
+    // 1. Fetch driver details to know their vehicle type
+    const driver = await User.findById(req.user.userId);
+    if (!driver || driver.role !== "DRIVER") {
+      return res.status(403).json({ message: "Only drivers can access active requests" });
+    }
+
+    const driverVehicleType = driver.vehicleInfo?.type || "CAR";
+
+    // 2. Filter rides by status and vehicle type
+    // Note: 'Prime' drivers can see both 'Car' and 'Prime' requests for more earnings
+    let typeQuery = { $in: [driverVehicleType] };
+    if (driverVehicleType === "PRIME") {
+      typeQuery = { $in: ["PRIME", "CAR"] };
+    }
+
+    const rides = await Ride.find({ 
+      status: "REQUESTED",
+      vehicleType: typeQuery
+    });
+
     res.json(rides);
   } catch (error) {
     res.status(500).json({ message: error.message });

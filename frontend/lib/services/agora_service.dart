@@ -22,7 +22,7 @@ class AgoraService {
     await engine.enableAudio();
     await engine.setAudioProfile(
       profile: AudioProfileType.audioProfileDefault,
-      scenario: AudioScenarioType.audioScenarioGameStreaming,
+      scenario: AudioScenarioType.audioScenarioChatroom,
     );
 
     // Register event handlers
@@ -49,7 +49,11 @@ class AgoraService {
       token: token,
       channelId: channelId,
       uid: 0,
-      options: const ChannelMediaOptions(),
+      options: const ChannelMediaOptions(
+        publishMicrophoneTrack: true,
+        autoSubscribeAudio: true,
+        clientRoleType: ClientRoleType.clientRoleBroadcaster,
+      ),
     );
   }
 

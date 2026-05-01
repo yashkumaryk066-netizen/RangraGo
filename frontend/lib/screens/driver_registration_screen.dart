@@ -13,6 +13,8 @@ class DriverRegistrationScreen extends StatefulWidget {
 
 class _DriverRegistrationScreenState extends State<DriverRegistrationScreen> {
   final AuthService _authService = AuthService();
+  final TextEditingController _nameCtrl = TextEditingController();
+  final TextEditingController _phoneCtrl = TextEditingController();
   final TextEditingController _modelCtrl = TextEditingController();
   final TextEditingController _numberCtrl = TextEditingController();
   final TextEditingController _licenseCtrl = TextEditingController();
@@ -21,13 +23,15 @@ class _DriverRegistrationScreenState extends State<DriverRegistrationScreen> {
   bool _isLoading = false;
 
   Future<void> _submit() async {
-    if (_modelCtrl.text.isEmpty || _numberCtrl.text.isEmpty || _licenseCtrl.text.isEmpty || _aadhaarCtrl.text.isEmpty) {
+    if (_nameCtrl.text.isEmpty || _phoneCtrl.text.isEmpty || _modelCtrl.text.isEmpty || _numberCtrl.text.isEmpty || _licenseCtrl.text.isEmpty || _aadhaarCtrl.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Sabhi details bharna zaroori hai!")));
       return;
     }
 
     setState(() => _isLoading = true);
     final updatedUser = await _authService.updateProfile({
+      "name": _nameCtrl.text,
+      "phone": _phoneCtrl.text,
       "vehicleInfo": {
         "model": _modelCtrl.text,
         "number": _numberCtrl.text,
@@ -62,8 +66,13 @@ class _DriverRegistrationScreenState extends State<DriverRegistrationScreen> {
             ),
             const SizedBox(height: 30),
             const Text("DRIVER ONBOARDING", style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w900, letterSpacing: 2)),
-            const Text("Enter your vehicle and license details", style: TextStyle(color: Colors.white38, fontSize: 12)),
+            const Text("Enter your identity, vehicle and license details", style: TextStyle(color: Colors.white38, fontSize: 12)),
             const SizedBox(height: 40),
+            
+            _buildInput("FULL NAME", "Enter your legal name", _nameCtrl, Icons.person),
+            const SizedBox(height: 15),
+            _buildInput("PHONE NUMBER", "e.g. 9876543210", _phoneCtrl, Icons.phone, keyboardType: TextInputType.phone),
+            const SizedBox(height: 15),
 
             _buildInput("VEHICLE MODEL", "e.g. Maruti Suzuki Swift", _modelCtrl, Icons.directions_car),
             const SizedBox(height: 15),
@@ -81,11 +90,13 @@ class _DriverRegistrationScreenState extends State<DriverRegistrationScreen> {
             const SizedBox(height: 10),
             Row(
               children: [
-                _typeBtn("CAR"),
-                const SizedBox(width: 10),
                 _typeBtn("BIKE"),
                 const SizedBox(width: 10),
                 _typeBtn("AUTO"),
+                const SizedBox(width: 10),
+                _typeBtn("CAR"),
+                const SizedBox(width: 10),
+                _typeBtn("PRIME"),
               ],
             ),
 
