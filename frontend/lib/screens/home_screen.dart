@@ -641,7 +641,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
           )
-        : DriverRequestsScreen(requests: pendingRides, onAccept: _handleAcceptRide);
+        : DriverRequestsScreen(requests: pendingRides, onAccept: _handleSendBid);
   }
 
   Widget _buildActiveRideUI() {

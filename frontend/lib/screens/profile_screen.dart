@@ -39,7 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Future<void> _handleUpdate() async {
     setState(() => isLoading = true);
-    final updates = {
+    final Map<String, dynamic> updates = {
       "name": _nameController.text,
       "phone": _phoneController.text,
     };
