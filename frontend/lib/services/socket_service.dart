@@ -56,7 +56,15 @@ class SocketService {
   }
 
   void disconnect() {
-    if (socket.connected) socket.disconnect();
+    try {
+      // Use ?. to safely access socket even if not initialized
+      if (socket.connected == true) {
+        socket.clearListeners();
+        socket.disconnect();
+      }
+    } catch (e) {
+      print("Socket disconnect error: $e");
+    }
   }
 }
 

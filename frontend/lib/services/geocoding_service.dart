@@ -6,14 +6,13 @@ import 'package:geolocator/geolocator.dart';
 class GeocodingService {
   // Photon API - Advanced A to Z Location Search (Key-less)
   
-  static Future<List<Map<String, dynamic>>> searchPlaces(String query) async {
+  static Future<List<Map<String, dynamic>>> searchPlaces(String query, {LatLng? biasPos}) async {
     if (query.trim().isEmpty) return [];
 
     try {
-      final currentPos = await getCurrentLocation();
       String bias = "location_bias=78,20"; 
-      if (currentPos != null) {
-        bias = "lat=${currentPos.latitude}&lon=${currentPos.longitude}";
+      if (biasPos != null) {
+        bias = "lat=${biasPos.latitude}&lon=${biasPos.longitude}";
       }
 
       final uri = Uri.parse(

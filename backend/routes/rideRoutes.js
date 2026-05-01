@@ -58,24 +58,31 @@ router.post("/", verifyToken, async (req, res) => {
 // Accept Ride (Driver)
 router.post("/:id/accept", verifyToken, async (req, res) => {
   try {
-    const ride = await Ride.findById(req.params.id);
-    
-    if (!ride) return res.status(404).json({ message: "Ride not found" });
-    if (ride.status !== "REQUESTED") return res.status(400).json({ message: "Ride already taken" });
+    // 1. Ensure user is a DRIVER
+    if (req.user.role !== "DRIVER") {
+      return res.status(403).json({ message: "Only drivers can accept rides" });
+    }
 
     const { fare: customFare } = req.body;
     
-    ride.status = "ACCEPTED";
-    ride.driverId = req.user.userId;
-    if (customFare) ride.fare = customFare;
-    await ride.save();
+    // 2. ATOMIC UPDATE: Find REQUESTED ride and update to ACCEPTED in one step
+    // This prevents race conditions where two drivers accept at the same time
+    const ride = await Ride.findOneAndUpdate(
+      { _id: req.params.id, status: "REQUESTED" },
+      { 
+        status: "ACCEPTED", 
+        driverId: req.user.userId,
+        ...(customFare && { fare: customFare })
+      },
+      { new: true }
+    );
     
-    // Fetch full driver info to send to rider
+    if (!ride) return res.status(400).json({ message: "Ride not available or already taken" });
+
+    // 3. Notify Peers
     const driver = await User.findById(req.user.userId);
-    // Fetch full rider info to send to driver
     const rider = await User.findById(ride.userId);
     
-    // Notify RIDER with driver's full details
     req.io.to(ride.userId).emit("ride-accepted", {
       rideId: ride._id,
       driverId: req.user.userId,
@@ -87,7 +94,6 @@ router.post("/:id/accept", verifyToken, async (req, res) => {
       fare: ride.fare
     });
 
-    // Notify DRIVER with rider's details  
     req.io.to(req.user.userId).emit("rider-info", {
       rideId: ride._id,
       riderName: rider?.name || "Rider",
@@ -96,7 +102,6 @@ router.post("/:id/accept", verifyToken, async (req, res) => {
       drop: ride.drop
     });
 
-    // Notify ALL other drivers to remove this ride from their list
     req.io.to("online-drivers").emit("ride-taken", { rideId: ride._id });
     
     res.json(ride);

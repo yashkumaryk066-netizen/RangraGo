@@ -76,10 +76,12 @@ class RangraGoApp extends StatefulWidget {
 
 class _RangraGoAppState extends State<RangraGoApp> {
   bool _isSplashFinished = false;
+  late Future<Map<String, dynamic>?> _sessionFuture;
 
   @override
   void initState() {
     super.initState();
+    _sessionFuture = _loadSession();
     WidgetsBinding.instance.addPostFrameCallback((_) => UpdateChecker.check(context));
   }
 
@@ -111,7 +113,9 @@ class _RangraGoAppState extends State<RangraGoApp> {
     await prefs.setString('user_data', jsonEncode(user));
     await prefs.setBool('is_driver', isDriver);
     AppConfig.userToken = token;
-    setState(() {}); // Re-trigger FutureBuilder
+    setState(() {
+      _sessionFuture = _loadSession();
+    });
   }
 
   @override
@@ -130,7 +134,7 @@ class _RangraGoAppState extends State<RangraGoApp> {
       home: !_isSplashFinished 
         ? SplashScreen(onFinish: () => setState(() => _isSplashFinished = true))
         : FutureBuilder<Map<String, dynamic>?>(
-        future: _loadSession(),
+        future: _sessionFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Scaffold(

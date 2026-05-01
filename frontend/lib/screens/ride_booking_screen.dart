@@ -38,7 +38,8 @@ class _RideBookingScreenState extends State<RideBookingScreen> {
 
     setState(() => _isSearching = true);
     _debounce = Timer(const Duration(milliseconds: 600), () async {
-      final results = await GeocodingService.searchPlaces(query);
+      // Use _pickupPos as bias for more relevant local results
+      final results = await GeocodingService.searchPlaces(query, biasPos: _pickupPos);
       if (mounted) {
         setState(() {
           _suggestions = results;
