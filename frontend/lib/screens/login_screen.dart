@@ -24,7 +24,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
     // clientId is optional on Android if google-services.json is present, but mandatory for Web
     clientId: kIsWeb ? AppConfig.googleWebClientId : null,
     // Using the verified Web Client ID from google-services.json for Android serverClientId
-    serverClientId: kIsWeb ? AppConfig.googleWebClientId : AppConfig.googleAndroidClientId,
+    // For Web, serverClientId MUST be null as it uses clientId instead.
+    serverClientId: kIsWeb ? null : AppConfig.googleAndroidClientId,
     scopes: ["email", "profile"],
   );
 
