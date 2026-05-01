@@ -20,6 +20,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late TextEditingController _numberController;
   late TextEditingController _licenseController;
   late TextEditingController _aadhaarController;
+  late String _selectedType;
   
   bool isEditing = false;
   bool isLoading = false;
@@ -35,6 +36,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     _numberController = TextEditingController(text: vehicle['number'] ?? "");
     _licenseController = TextEditingController(text: vehicle['license'] ?? "");
     _aadhaarController = TextEditingController(text: vehicle['aadhaar'] ?? "");
+    _selectedType = vehicle['type'] ?? "BIKE";
   }
 
   Future<void> _handleUpdate() async {
@@ -50,7 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         "number": _numberController.text,
         "license": _licenseController.text,
         "aadhaar": _aadhaarController.text,
-        "type": widget.userData['vehicleInfo']?['type'] ?? "BIKE",
+        "type": _selectedType,
       };
     }
 
@@ -144,6 +146,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   if (isDriver) ...[
                     const SizedBox(height: 30),
                     _sectionHeader("VEHICLE DETAILS"),
+                    _buildVehicleTypeDropdown(isEditing),
                     _buildInputField("Vehicle Model", _modelController, Icons.directions_car_outlined, isEditing),
                     _buildInputField("Vehicle Number", _numberController, Icons.tag, isEditing),
                     const SizedBox(height: 30),
@@ -235,6 +238,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
           prefixIcon: Icon(icon, color: const Color(0xFF06B6D4), size: 20),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildVehicleTypeDropdown(bool enabled) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      decoration: BoxDecoration(
+        color: enabled ? Colors.white.withOpacity(0.07) : Colors.white.withOpacity(0.03),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: enabled ? const Color(0xFF06B6D4).withOpacity(0.3) : Colors.white10),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          value: _selectedType,
+          enabled: enabled,
+          dropdownColor: const Color(0xFF14142A),
+          isExpanded: true,
+          style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w600),
+          items: ["BIKE", "AUTO", "CAR", "PRIME"].map((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
+          onChanged: (String? newValue) {
+            if (newValue != null) {
+              setState(() => _selectedType = newValue);
+            }
+          },
         ),
       ),
     );
