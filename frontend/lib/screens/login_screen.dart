@@ -21,8 +21,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   late AnimationController _bgController;
 
   final GoogleSignIn _googleSignIn = GoogleSignIn(
-    clientId: kIsWeb ? AppConfig.googleWebClientId : AppConfig.googleAndroidClientId,
-    serverClientId: AppConfig.googleAndroidClientId,
+    // clientId is optional on Android if google-services.json is present, but mandatory for Web
+    clientId: kIsWeb ? AppConfig.googleWebClientId : null,
+    serverClientId: AppConfig.googleWebClientId,
     scopes: ["email", "profile"],
   );
 
