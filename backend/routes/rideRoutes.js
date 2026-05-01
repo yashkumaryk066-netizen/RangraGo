@@ -4,32 +4,46 @@ const Ride = require("../models/Ride");
 const User = require("../models/User");
 const verifyToken = require("../middleware/auth");
 
-// Create Ride (Passenger)
+// Helper for distance calculation (Haversine formula)
+function getDistance(p1, p2) {
+  if (!p1.latitude || !p1.longitude || !p2.latitude || !p2.longitude) return 999999;
+  const R = 6371e3; // metres
+  const φ1 = p1.latitude * Math.PI/180;
+  const φ2 = p2.latitude * Math.PI/180;
+  const Δφ = (p2.latitude-p1.latitude) * Math.PI/180;
+  const Δλ = (p2.longitude-p1.longitude) * Math.PI/180;
+
+  const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+          Math.cos(φ1) * Math.cos(φ2) *
+          Math.sin(Δλ/2) * Math.sin(Δλ/2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+  return R * c; // in metres
+}
+
+// 1. Create Ride (Passenger)
 router.post("/", verifyToken, async (req, res) => {
   try {
     const { vehicleType, distanceKm, pickupCoords } = req.body;
     
-    // 1. Calculate Fare
     let baseFare = 20;
     let ratePerKm = 5;
-    switch (vehicleType) {
-      case "Auto": baseFare = 30; ratePerKm = 10; break;
-      case "Car": baseFare = 50; ratePerKm = 15; break;
-      case "Prime": baseFare = 80; ratePerKm = 25; break;
+    switch (vehicleType?.toUpperCase()) {
+      case "AUTO": baseFare = 30; ratePerKm = 10; break;
+      case "CAR": baseFare = 50; ratePerKm = 15; break;
+      case "PRIME": baseFare = 80; ratePerKm = 25; break;
       default: baseFare = 20; ratePerKm = 5;
     }
     const distance = parseFloat(distanceKm) || 0;
     const fare = Math.round(baseFare + (distance * ratePerKm));
 
-    // 2. Save Ride to DB
     const ride = await Ride.create({
       ...req.body,
       userId: req.user.userId,
       fare
     });
     
-    // 3. GEO-FILTERING: Find nearby online drivers (within 5km)
-    // pickupCoords = { lat, lng }
+    // Notify nearby drivers (within 5km)
     const nearbyDrivers = await User.find({
       role: "DRIVER",
       isOnline: true,
@@ -37,14 +51,13 @@ router.post("/", verifyToken, async (req, res) => {
         $near: {
           $geometry: {
             type: "Point",
-            coordinates: [pickupCoords.lng, pickupCoords.lat] // [lng, lat]
+            coordinates: [pickupCoords.lng, pickupCoords.lat]
           },
-          $maxDistance: 5000 // 5 Kilometers
+          $maxDistance: 5000
         }
       }
     });
 
-    // 4. Notify ONLY those nearby drivers
     nearbyDrivers.forEach(driver => {
       req.io.to(driver._id.toString()).emit("new-ride", ride);
     });
@@ -55,18 +68,15 @@ router.post("/", verifyToken, async (req, res) => {
   }
 });
 
-// Accept Ride (Driver)
+// 2. Accept Ride (Driver)
 router.post("/:id/accept", verifyToken, async (req, res) => {
   try {
-    // 1. Ensure user is a DRIVER
     if (req.user.role !== "DRIVER") {
       return res.status(403).json({ message: "Only drivers can accept rides" });
     }
 
     const { fare: customFare } = req.body;
     
-    // 2. ATOMIC UPDATE: Find REQUESTED ride and update to ACCEPTED in one step
-    // This prevents race conditions where two drivers accept at the same time
     const ride = await Ride.findOneAndUpdate(
       { _id: req.params.id, status: "REQUESTED" },
       { 
@@ -79,7 +89,6 @@ router.post("/:id/accept", verifyToken, async (req, res) => {
     
     if (!ride) return res.status(400).json({ message: "Ride not available or already taken" });
 
-    // 3. Notify Peers
     const driver = await User.findById(req.user.userId);
     const rider = await User.findById(ride.userId);
     
@@ -110,7 +119,7 @@ router.post("/:id/accept", verifyToken, async (req, res) => {
   }
 });
 
-// Start Ride (Driver + OTP)
+// 3. Start Ride (Driver + OTP)
 router.post("/:id/start", verifyToken, async (req, res) => {
   try {
     const { otp } = req.body;
@@ -129,23 +138,34 @@ router.post("/:id/start", verifyToken, async (req, res) => {
   }
 });
 
-// Complete Ride (Driver)
+// 4. Complete Ride (Driver - Restricted to 200m)
 router.post("/:id/complete", verifyToken, async (req, res) => {
   try {
+    const { currentLat, currentLng } = req.body;
     const ride = await Ride.findById(req.params.id);
     if (!ride) return res.status(404).json({ message: "Ride not found" });
+
+    // GEOCONTAINMENT CHECK: Must be within 200m of drop-off
+    if (currentLat && currentLng) {
+      const distance = getDistance(
+        { latitude: currentLat, longitude: currentLng },
+        { latitude: ride.dropCoords.lat, longitude: ride.dropCoords.lng }
+      );
+      
+      if (distance > 200) {
+        return res.status(403).json({ 
+          message: `Too far from destination (${Math.round(distance)}m). Reach within 200m to complete.` 
+        });
+      }
+    }
 
     ride.status = "COMPLETED";
     ride.paymentStatus = "PAID";
     await ride.save();
 
-    // Update driver stats
     if (ride.driverId) {
       await User.findByIdAndUpdate(ride.driverId, {
-        $inc: { 
-          totalEarnings: ride.fare || 0,
-          completedRides: 1
-        }
+        $inc: { totalEarnings: ride.fare || 0, completedRides: 1 }
       });
     }
 
@@ -156,11 +176,15 @@ router.post("/:id/complete", verifyToken, async (req, res) => {
   }
 });
 
-// Cancel Ride
+// 5. Cancel Ride (Restricted once STARTED)
 router.post("/:id/cancel", verifyToken, async (req, res) => {
   try {
     const ride = await Ride.findById(req.params.id);
     if (!ride) return res.status(404).json({ message: "Ride not found" });
+
+    if (ride.status === "STARTED") {
+      return res.status(403).json({ message: "Ride has already started. Cannot cancel now." });
+    }
 
     ride.status = "CANCELLED";
     await ride.save();
@@ -174,7 +198,7 @@ router.post("/:id/cancel", verifyToken, async (req, res) => {
   }
 });
 
-// Get History
+// 6. Get History
 router.get("/history", verifyToken, async (req, res) => {
   try {
     const filter = req.user.role === "DRIVER" ? { driverId: req.user.userId } : { userId: req.user.userId };
@@ -185,29 +209,19 @@ router.get("/history", verifyToken, async (req, res) => {
   }
 });
 
-// Get all active rides (filtered for online drivers by vehicle type)
+// 7. Get Active Rides (Filtered by Driver's Vehicle Type)
 router.get("/active", verifyToken, async (req, res) => {
   try {
-    // 1. Fetch driver details to know their vehicle type
     const driver = await User.findById(req.user.userId);
     if (!driver || driver.role !== "DRIVER") {
       return res.status(403).json({ message: "Only drivers can access active requests" });
     }
 
-    const driverVehicleType = driver.vehicleInfo?.type || "CAR";
+    const type = driver.vehicleInfo?.type || "CAR";
+    let typeQuery = { $in: [type] };
+    if (type === "PRIME") typeQuery = { $in: ["PRIME", "CAR"] };
 
-    // 2. Filter rides by status and vehicle type
-    // Note: 'Prime' drivers can see both 'Car' and 'Prime' requests for more earnings
-    let typeQuery = { $in: [driverVehicleType] };
-    if (driverVehicleType === "PRIME") {
-      typeQuery = { $in: ["PRIME", "CAR"] };
-    }
-
-    const rides = await Ride.find({ 
-      status: "REQUESTED",
-      vehicleType: typeQuery
-    });
-
+    const rides = await Ride.find({ status: "REQUESTED", vehicleType: typeQuery });
     res.json(rides);
   } catch (error) {
     res.status(500).json({ message: error.message });

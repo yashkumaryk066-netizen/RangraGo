@@ -336,15 +336,29 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _handleCompleteRide() async {
     try {
+      // Send current location for geofence validation
       final response = await http.post(
         Uri.parse("${AppConfig.rideUrl}/$activeRideId/complete"),
         headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer ${AppConfig.userToken}"
         },
+        body: jsonEncode({
+          "currentLat": driverPos?.latitude,
+          "currentLng": driverPos?.longitude,
+        }),
       );
+
       if (response.statusCode == 200) {
         setState(() => currentStatus = "COMPLETED");
+      } else {
+        final error = jsonDecode(response.body);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(error['message'] ?? "Error completing ride"),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
       }
     } catch (e) {
       print("Complete error: $e");
@@ -748,7 +762,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
               
-              if (currentStatus != "COMPLETED") ...[
+              if (currentStatus != "COMPLETED" && currentStatus != "STARTED") ...[
                 const SizedBox(height: 12),
                 GestureDetector(
                   onTap: () async {
