@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "40872959188-ebp87clins78jd6mbrcrljmco9r5psqe.apps.googleusercontent.com",
+          "client_id": "40872959188-etcvdru1qifo0djsbq0kl3msqnt95ql6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.rangra_go",
+            "certificate_hash": "47324b154f730e925ef25ff6d7a1d8b99b30f84f"
+          }
+        },
+        {
+          "client_id": "40872959188-dri10lcspcmbt4v8i7pihpnho7ra25ch.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,7 +35,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "40872959188-ebp87clins78jd6mbrcrljmco9r5psqe.apps.googleusercontent.com",
+              "client_id": "40872959188-dri10lcspcmbt4v8i7pihpnho7ra25ch.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
