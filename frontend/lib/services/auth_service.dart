@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'config.dart';
 
 class AuthService {
@@ -23,19 +24,44 @@ class AuthService {
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
-        AppConfig.userToken = data['token'];
-        print("✅ Login Success: Token Received");
+        final token = data['token'];
+        final user = data['user'];
+        AppConfig.userToken = token;
+        
+        // Persist session to match main.dart logic
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('token', token);
+        await prefs.setString('user_data', jsonEncode(user));
+        await prefs.setBool('is_driver', role == "DRIVER");
+        
+        print("✅ Login Success: Session Persisted");
         return data;
       } else {
         print("❌ Auth Error (${response.statusCode}): ${response.body}");
-        // Return a map with error info if needed, but for now null is fine
         return null;
       }
     } catch (e) {
       print("🚨 Network/Server Error: $e");
-      print("Check if backend is running at: ${AppConfig.authUrl}");
       return null;
     }
+  }
+
+  Future<void> logout() async {
+    AppConfig.userToken = null;
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+    print("👋 Logged out and session cleared");
+  }
+
+  Future<bool> tryAutoLogin() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token');
+    if (token != null) {
+      AppConfig.userToken = token;
+      print("🔄 Auto-login successful with persisted token");
+      return true;
+    }
+    return false;
   }
 
   Future<Map<String, dynamic>?> getProfile() async {
