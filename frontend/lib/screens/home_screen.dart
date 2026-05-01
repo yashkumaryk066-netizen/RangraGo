@@ -40,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isOnline = false;
   
   List<RideRequest> pendingRides = [];
+  List<Map<String, dynamic>> incomingBids = [];
   String? currentStatus; 
   String? activeRideId;
   String? remoteId;
@@ -159,6 +160,13 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         }
       },
+      onNewBid: (data) {
+        if (mounted && !widget.isDriver) {
+          setState(() {
+            incomingBids.add(data);
+          });
+        }
+      },
       onNewRide: widget.isDriver ? (data) {
         if (mounted && isOnline) {
           _fetchPendingRides();
@@ -262,26 +270,53 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() => isLoading = false);
   }
 
-  Future<void> _handleAcceptRide(RideRequest ride, double? customFare) async {
+  Future<void> _handleAcceptBid(Map<String, dynamic> bid) async {
     try {
       final response = await http.post(
-        Uri.parse("${AppConfig.rideUrl}/${ride.id}/accept"),
+        Uri.parse("${AppConfig.rideUrl}/$activeRideId/accept-bid"),
         headers: {
           "Content-Type": "application/json",
           "Authorization": "Bearer ${AppConfig.userToken}"
         },
-        body: jsonEncode({"fare": customFare}),
+        body: jsonEncode({"driverId": bid['driverId']}),
       );
       if (response.statusCode == 200) {
         setState(() {
-          activeRideId = ride.id;
           currentStatus = "ACCEPTED";
-          remoteId = ride.userId;
-          rideFare = customFare ?? ride.fare;
+          remoteId = bid['driverId'];
+          remoteUserName = bid['driverName'];
+          rideFare = bid['bidPrice'].toDouble();
+          incomingBids.clear();
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Failed to accept ride")));
+      print("Accept bid error: $e");
+    }
+  }
+
+  Future<void> _handleSendBid(RideRequest ride, double? customFare) async {
+    try {
+      final response = await http.post(
+        Uri.parse("${AppConfig.rideUrl}/${ride.id}/bid"),
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer ${AppConfig.userToken}"
+        },
+        body: jsonEncode({"bidPrice": customFare ?? ride.fare}),
+      );
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text("Bid sent! Wait for rider to accept."),
+          backgroundColor: Colors.green,
+        ));
+        setState(() {
+          pendingRides.removeWhere((r) => r.id == ride.id);
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Bid failed. Ride might be taken.")));
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Failed to send bid")));
     }
   }
 
@@ -506,6 +541,54 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Widget _bidCard(Map<String, dynamic> bid) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.white10),
+      ),
+      child: Row(
+        children: [
+          CircleAvatar(
+            backgroundColor: const Color(0xFF7C3AED).withOpacity(0.2),
+            child: const Icon(Icons.person, color: Color(0xFF06B6D4), size: 18),
+          ),
+          const SizedBox(width: 15),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(bid['driverName'] ?? "Driver", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14)),
+                Text("${bid['vehicleInfo']?['model'] ?? 'Vehicle'} · ${bid['vehicleInfo']?['type'] ?? ''}", style: const TextStyle(color: Colors.white38, fontSize: 11)),
+              ],
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text("₹${bid['bidPrice']}", style: const TextStyle(color: Colors.greenAccent, fontWeight: FontWeight.bold, fontSize: 18)),
+              const SizedBox(height: 5),
+              ElevatedButton(
+                onPressed: () => _handleAcceptBid(bid),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF06B6D4),
+                  foregroundColor: Colors.black,
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                  minimumSize: const Size(60, 30),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                ),
+                child: const Text("ACCEPT", style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _drawerTile(IconData icon, String title, VoidCallback onTap, {Color color = Colors.white70}) {
     return ListTile(
       leading: Icon(icon, color: color),
@@ -714,6 +797,19 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                 ],
               ),
+              
+              const SizedBox(height: 10),
+
+              if (!widget.isDriver && currentStatus == "REQUESTED") ...[
+                const Text("DRIVER OFFERS", style: TextStyle(color: Color(0xFF06B6D4), fontSize: 10, fontWeight: FontWeight.bold, letterSpacing: 1.5)),
+                const SizedBox(height: 10),
+                if (incomingBids.isEmpty)
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 20),
+                    child: Center(child: Text("WAITING FOR DRIVERS...", style: TextStyle(color: Colors.white12, fontSize: 11, letterSpacing: 1))),
+                  ),
+                ...incomingBids.map((bid) => _bidCard(bid)).toList(),
+              ],
               
               const SizedBox(height: 25),
 

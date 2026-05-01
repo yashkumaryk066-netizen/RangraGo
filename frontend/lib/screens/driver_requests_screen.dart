@@ -107,7 +107,7 @@ class _DriverRequestsScreenState extends State<DriverRequestsScreen> {
                                 gradient: const LinearGradient(colors: [Color(0xFF7C3AED), Color(0xFF06B6D4)]),
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              child: const Text("ACCEPT", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
+                              child: const Text("SEND BID", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 12)),
                             ),
                           ),
                         ],

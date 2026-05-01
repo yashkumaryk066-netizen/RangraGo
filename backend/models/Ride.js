@@ -55,6 +55,14 @@ const rideSchema = new mongoose.Schema({
     enum: ["PENDING", "PAID"],
     default: "PENDING",
   },
+  bids: [{
+    driverId: String,
+    driverName: String,
+    driverPhone: String,
+    vehicleInfo: Object,
+    bidPrice: Number,
+    createdAt: { type: Date, default: Date.now }
+  }],
   createdAt: {
     type: Date,
     default: Date.now,

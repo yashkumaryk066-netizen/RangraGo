@@ -68,60 +68,73 @@ router.post("/", verifyToken, async (req, res) => {
   }
 });
 
-// 2. Accept Ride (Driver)
-router.post("/:id/accept", verifyToken, async (req, res) => {
+// 2. Submit Bid (Driver)
+router.post("/:id/bid", verifyToken, async (req, res) => {
   try {
-    if (req.user.role !== "DRIVER") {
-      return res.status(403).json({ message: "Only drivers can accept rides" });
-    }
+    if (req.user.role !== "DRIVER") return res.status(403).json({ message: "Only drivers can bid" });
 
-    const { fare: customFare } = req.body;
-    
-    const ride = await Ride.findOneAndUpdate(
-      { _id: req.params.id, status: "REQUESTED" },
-      { 
-        status: "ACCEPTED", 
-        driverId: req.user.userId,
-        ...(customFare && { fare: customFare })
-      },
-      { new: true }
-    );
-    
-    if (!ride) return res.status(400).json({ message: "Ride not available or already taken" });
+    const { bidPrice } = req.body;
+    const ride = await Ride.findById(req.params.id);
+    if (!ride || ride.status !== "REQUESTED") return res.status(400).json({ message: "Ride not available" });
 
     const driver = await User.findById(req.user.userId);
-    const rider = await User.findById(ride.userId);
     
-    req.io.to(ride.userId).emit("ride-accepted", {
+    const bid = {
+      driverId: driver._id,
+      driverName: driver.name,
+      driverPhone: driver.phone,
+      vehicleInfo: driver.vehicleInfo,
+      bidPrice: bidPrice || ride.fare
+    };
+
+    // Prevent duplicate bids from same driver
+    ride.bids = ride.bids.filter(b => b.driverId.toString() !== driver._id.toString());
+    ride.bids.push(bid);
+    await ride.save();
+
+    // Notify Rider about new bid
+    req.io.to(ride.userId).emit("new-bid", bid);
+    
+    res.json({ message: "Bid submitted", bid });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+});
+
+// 3. Accept Bid (Rider)
+router.post("/:id/accept-bid", verifyToken, async (req, res) => {
+  try {
+    const { driverId } = req.body;
+    const ride = await Ride.findOne({ _id: req.params.id, status: "REQUESTED" });
+    if (!ride) return res.status(400).json({ message: "Ride already taken" });
+
+    const chosenBid = ride.bids.find(b => b.driverId.toString() === driverId);
+    if (!chosenBid) return res.status(404).json({ message: "Bid not found" });
+
+    // Update ride to ACCEPTED
+    ride.status = "ACCEPTED";
+    ride.driverId = driverId;
+    ride.fare = chosenBid.bidPrice;
+    await ride.save();
+
+    // Notify Driver
+    req.io.to(driverId).emit("ride-accepted", {
       rideId: ride._id,
-      driverId: req.user.userId,
-      driverName: driver?.name || "Driver",
-      driverPhone: driver?.phone || "",
-      driverVehicle: driver?.vehicleInfo || {},
-      status: "ACCEPTED",
       otp: ride.otp,
-      fare: ride.fare
+      fare: ride.fare,
+      riderName: (await User.findById(ride.userId))?.name || "Rider"
     });
 
-    req.io.to(req.user.userId).emit("rider-info", {
-      rideId: ride._id,
-      riderName: rider?.name || "Rider",
-      riderPhone: rider?.phone || "",
-      pickup: ride.pickup,
-      drop: ride.drop,
-      pickupCoords: ride.pickupCoords,
-      dropCoords: ride.dropCoords,
-    });
-
+    // Notify other drivers that ride is taken
     req.io.to("online-drivers").emit("ride-taken", { rideId: ride._id });
-    
+
     res.json(ride);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 });
 
-// 3. Start Ride (Driver + OTP)
+// 4. Start Ride (Driver + OTP)
 router.post("/:id/start", verifyToken, async (req, res) => {
   try {
     const { otp } = req.body;
@@ -140,14 +153,13 @@ router.post("/:id/start", verifyToken, async (req, res) => {
   }
 });
 
-// 4. Complete Ride (Driver - Restricted to 200m)
+// 5. Complete Ride (Driver - Restricted to 200m)
 router.post("/:id/complete", verifyToken, async (req, res) => {
   try {
     const { currentLat, currentLng } = req.body;
     const ride = await Ride.findById(req.params.id);
     if (!ride) return res.status(404).json({ message: "Ride not found" });
 
-    // GEOCONTAINMENT CHECK: Must be within 200m of drop-off
     if (currentLat && currentLng) {
       const distance = getDistance(
         { latitude: currentLat, longitude: currentLng },
@@ -178,7 +190,7 @@ router.post("/:id/complete", verifyToken, async (req, res) => {
   }
 });
 
-// 5. Cancel Ride (Restricted once STARTED)
+// 6. Cancel Ride
 router.post("/:id/cancel", verifyToken, async (req, res) => {
   try {
     const ride = await Ride.findById(req.params.id);
@@ -200,7 +212,7 @@ router.post("/:id/cancel", verifyToken, async (req, res) => {
   }
 });
 
-// 6. Get History
+// 7. Get History
 router.get("/history", verifyToken, async (req, res) => {
   try {
     const filter = req.user.role === "DRIVER" ? { driverId: req.user.userId } : { userId: req.user.userId };
@@ -211,7 +223,7 @@ router.get("/history", verifyToken, async (req, res) => {
   }
 });
 
-// 7. Get Active Rides (Filtered by Driver's Vehicle Type)
+// 8. Get Active Rides (Filtered by Driver's Vehicle Type)
 router.get("/active", verifyToken, async (req, res) => {
   try {
     const driver = await User.findById(req.user.userId);
