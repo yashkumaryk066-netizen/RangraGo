@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:google_sign_in_platform_interface/google_sign_in_platform_interface.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:ui';
 import '../services/config.dart';
@@ -87,8 +86,6 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   }
 
   Future<void> _handleGoogleSignIn() async {
-    if (kIsWeb) return; // Web uses renderButton
-
     setState(() => _isLoading = true);
     try {
       final account = await _googleSignIn.signIn();
@@ -257,10 +254,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
             padding: EdgeInsets.all(20),
             child: CircularProgressIndicator(color: Color(0xFFA855F7)),
           )
-        else if (kIsWeb)
-          _buildWebLoginButton()
         else
-          _buildMobileLoginButton(),
+          _buildCustomGoogleButton(),
         
         const SizedBox(height: 16),
         Text("By continuing, you agree to our Terms of Service",
@@ -269,45 +264,42 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
     );
   }
 
-  Widget _buildWebLoginButton() {
-    return Container(
-      width: double.infinity,
-      height: 64,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        overflow: BoxOverflow.hidden,
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.3), blurRadius: 20)],
-      ),
-      child: GoogleSignInPlatform.instance.renderButton(
-        configuration: GSIButtonConfiguration(
-          type: GSIButtonType.standard,
-          theme: GSIButtonTheme.filledBlue,
-          size: GSIButtonSize.large,
-          text: GSIButtonText.continueWith,
-          shape: GSIButtonShape.pill,
-          width: 400,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMobileLoginButton() {
+  Widget _buildCustomGoogleButton() {
     return GestureDetector(
       onTap: _handleGoogleSignIn,
       child: Container(
-        height: 64, width: double.infinity,
+        height: 55,
+        width: double.infinity,
         decoration: BoxDecoration(
-          gradient: const LinearGradient(colors: [Color(0xFF7C3AED), Color(0xFF06B6D4)]),
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [BoxShadow(color: const Color(0xFF7C3AED).withOpacity(0.3), blurRadius: 20, offset: const Offset(0, 10))],
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, 5),
+            ),
+          ],
         ),
-        child: const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+        child: Stack(
+          alignment: Alignment.center,
           children: [
-            Icon(Icons.login_rounded, color: Colors.white, size: 24),
-            SizedBox(width: 12),
-            Text("Continue with Google",
-              style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold)),
+            Positioned(
+              left: 20,
+              child: Image.network(
+                'https://img.icons8.com/color/48/000000/google-logo.png',
+                height: 24,
+              ),
+            ),
+            const Text(
+              "SIGN IN WITH GOOGLE",
+              style: TextStyle(
+                color: Color(0xFF1F1F1F),
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+                letterSpacing: 1,
+              ),
+            ),
           ],
         ),
       ),
