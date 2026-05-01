@@ -25,7 +25,7 @@ class _RideBookingScreenState extends State<RideBookingScreen> {
 
   List<Map<String, dynamic>> _suggestions = [];
   Timer? _debounce;
-  String selectedVehicle = "CAR";
+  String? selectedVehicle;
 
   void _onQueryChanged(String query, String field) {
     setState(() => _activeField = field);
@@ -240,9 +240,13 @@ class _RideBookingScreenState extends State<RideBookingScreen> {
                 GestureDetector(
                   onTap: () {
                     if (_pickupController.text.isNotEmpty && _dropController.text.isNotEmpty && _dropPos != null) {
+                      if (selectedVehicle == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Pehle ek Vehicle Type chuno!")));
+                        return;
+                      }
                       const Distance distance = Distance();
                       double dist = distance.as(LengthUnit.Meter, _pickupPos, _dropPos!) / 1000.0;
-                      widget.onBook(_pickupController.text, _dropController.text, _pickupPos, _dropPos!, selectedVehicle, dist);
+                      widget.onBook(_pickupController.text, _dropController.text, _pickupPos, _dropPos!, selectedVehicle!, dist);
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Pickup aur Drop dono fill karo")));
                     }

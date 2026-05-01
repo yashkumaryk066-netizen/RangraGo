@@ -29,7 +29,6 @@ const userSchema = new mongoose.Schema({
     type: {
       type: String,
       enum: ["BIKE", "CAR", "AUTO", "PRIME"],
-      default: "CAR",
     },
   },
   isOnline: {

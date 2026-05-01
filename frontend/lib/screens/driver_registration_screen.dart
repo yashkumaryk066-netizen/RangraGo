@@ -19,12 +19,12 @@ class _DriverRegistrationScreenState extends State<DriverRegistrationScreen> {
   final TextEditingController _numberCtrl = TextEditingController();
   final TextEditingController _licenseCtrl = TextEditingController();
   final TextEditingController _aadhaarCtrl = TextEditingController();
-  String _selectedType = "CAR";
+  String? _selectedType;
   bool _isLoading = false;
 
   Future<void> _submit() async {
-    if (_nameCtrl.text.isEmpty || _phoneCtrl.text.isEmpty || _modelCtrl.text.isEmpty || _numberCtrl.text.isEmpty || _licenseCtrl.text.isEmpty || _aadhaarCtrl.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Sabhi details bharna zaroori hai!")));
+    if (_nameCtrl.text.isEmpty || _phoneCtrl.text.isEmpty || _modelCtrl.text.isEmpty || _numberCtrl.text.isEmpty || _licenseCtrl.text.isEmpty || _aadhaarCtrl.text.isEmpty || _selectedType == null) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Sabhi details aur Vehicle Type chunna zaroori hai!")));
       return;
     }
 
