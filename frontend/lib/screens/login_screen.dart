@@ -23,7 +23,9 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     // clientId is optional on Android if google-services.json is present, but mandatory for Web
     clientId: kIsWeb ? AppConfig.googleWebClientId : null,
-    serverClientId: kIsWeb ? AppConfig.googleWebClientId : AppConfig.googleAndroidClientId,
+    // serverClientId is often the cause of PlatformException(10) on Android if there's a configuration mismatch.
+    // Since our backend doesn't verify the ID token, we can set it to null for Android to simplify the flow.
+    serverClientId: kIsWeb ? AppConfig.googleWebClientId : null,
     scopes: ["email", "profile"],
   );
 
